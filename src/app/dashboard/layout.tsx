@@ -1,4 +1,6 @@
-const Layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+import { WithChildren } from "@/utils/types";
+
+const Layout = ({ children }: WithChildren) => {
   return <div>Layout</div>;
 };
 
