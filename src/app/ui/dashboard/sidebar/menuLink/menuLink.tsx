@@ -7,8 +7,6 @@ import { usePathname } from "next/navigation";
 const MenuLink = ({ item }: any) => {
   const pathName = usePathname();
 
-  console.log("Path:", pathName);
-
   return (
     <Link
       href={item.path}
