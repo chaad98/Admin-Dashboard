@@ -1,7 +1,7 @@
-import style from "./Chart.module.css";
+import style from "./chart.module.css";
 
 const Chart = () => {
-  return <div>Enter</div>;
+  return <div>Chart</div>;
 };
 
 export default Chart;

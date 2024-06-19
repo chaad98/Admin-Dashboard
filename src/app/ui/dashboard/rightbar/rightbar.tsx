@@ -1,7 +1,7 @@
-import styles from "./Rightbar.module.css";
+import styles from "./rightbar.module.css";
 
 const Rightbar = () => {
-  return <div>Enter</div>;
+  return <div>RightBar</div>;
 };
 
 export default Rightbar;
