@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.button {
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+}
+
+.btnPrev {
+  background-color: rgb(156, 156, 156);
+}
+
+.btnNext {
+  background-color: rgb(215, 255, 253);
+  color: black;
+}
