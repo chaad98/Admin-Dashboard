@@ -1,7 +1,7 @@
 import styles from "@/app/ui/dashboard/product/singleProduct/singleProduct.module.css";
 import Image from "next/image";
 
-const SingleProduct = () => {
+const SingleProductPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
@@ -40,4 +40,4 @@ const SingleProduct = () => {
   );
 };
 
-export default SingleProduct;
+export default SingleProductPage;

@@ -1,6 +1,6 @@
 import styles from "@/app/ui/dashboard/product/addProduct/addProduct.module.css";
 
-const AddProduct = () => {
+const AddProductPage = () => {
   return (
     <div className={styles.container}>
       <form action="" className={styles.form}>
@@ -27,4 +27,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddProductPage;

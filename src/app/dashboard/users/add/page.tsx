@@ -1,6 +1,6 @@
 import styles from "@/app/ui/dashboard/user/addUser/addUser.module.css";
 
-const AddUser = () => {
+const AddUserPage = () => {
   return (
     <div className={styles.container}>
       <form action="" className={styles.form}>
@@ -39,4 +39,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default AddUserPage;
