@@ -18,13 +18,6 @@ const SingleProduct = () => {
           <input type="number" name="price" placeholder="Your price..." />
           <label>Stock</label>
           <input type="number" name="stock" placeholder="Your stock..." />
-          <label>Description</label>
-          <textarea
-            name="description"
-            id="description"
-            rows={10}
-            placeholder="Your description..."
-          />
           <label>Category</label>
           <select name="category" id="category">
             <option value="general">Choose a Category</option>
@@ -32,6 +25,14 @@ const SingleProduct = () => {
             <option value="phone">Phone</option>
             <option value="computer">Computer</option>
           </select>
+          <label>Description</label>
+          <textarea
+            name="description"
+            id="description"
+            rows={10}
+            placeholder="Your description..."
+          />
+
           <button className={styles.btnUpdate}>Submit</button>
         </form>
       </div>
