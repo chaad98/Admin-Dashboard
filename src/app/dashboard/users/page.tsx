@@ -5,14 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { existingRunner } from "@/services/adminService";
 import { logger } from "@/utils/logger";
+import { formattedDate } from "@/utils/date";
 
 const UsersPage = async () => {
   const runners = await existingRunner();
-
-  const formattedDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
-  };
+  logger("Runners data:", runners);
 
   return (
     <div className={styles.container}>
