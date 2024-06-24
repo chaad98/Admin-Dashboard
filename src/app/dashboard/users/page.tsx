@@ -35,7 +35,7 @@ const UsersPage = async () => {
             <tr key={runner._id}>
               <td className={styles.user}>
                 <Image
-                  src={"/noavatar.png"}
+                  src={runner.profilePicture || "/noavatar.png"}
                   alt=""
                   width={40}
                   height={40}
@@ -46,10 +46,10 @@ const UsersPage = async () => {
               <td>{runner.email}</td>
               <td>{formattedDate(runner.createdAt)}</td>
               <td>{runner.isAdmin ? "Admin" : "Runner"}</td>
-              <td>Active</td>
+              <td>{runner.isActive ? "Active" : "Inactive"}</td>
               <td>
                 <div className={styles.buttons}>
-                  <Link href={"/dashboard/users/:userId"}>
+                  <Link href={`/dashboard/users/${runner._id}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
