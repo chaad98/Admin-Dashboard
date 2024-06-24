@@ -3,8 +3,17 @@ import Search from "@/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/user/user.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import { existingRunner } from "@/services/adminService";
+import { logger } from "@/utils/logger";
 
-const UsersPage = () => {
+const UsersPage = async () => {
+  const runners = await existingRunner();
+
+  const formattedDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -25,36 +34,38 @@ const UsersPage = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className={styles.user}>
-              <Image
-                src={"/noavatar.png"}
-                alt=""
-                width={40}
-                height={40}
-                className={styles.userImage}
-              />
-              Odar DaaS
-            </td>
-            <td>malaysia@odar.my</td>
-            <td>20/6/2024</td>
-            <td>Admin</td>
-            <td>Active</td>
-            <td>
-              <div className={styles.buttons}>
-                <Link href={"/dashboard/users/:userId"}>
-                  <button className={`${styles.button} ${styles.view}`}>
-                    View
-                  </button>
-                </Link>
-                <Link href={""}>
-                  <button className={`${styles.button} ${styles.delete}`}>
-                    Delete
-                  </button>
-                </Link>
-              </div>
-            </td>
-          </tr>
+          {runners.map((runner: any) => (
+            <tr key={runner._id}>
+              <td className={styles.user}>
+                <Image
+                  src={"/noavatar.png"}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className={styles.userImage}
+                />
+                {runner.name}
+              </td>
+              <td>{runner.email}</td>
+              <td>{formattedDate(runner.createdAt)}</td>
+              <td>{runner.isAdmin ? "Admin" : "Runner"}</td>
+              <td>Active</td>
+              <td>
+                <div className={styles.buttons}>
+                  <Link href={"/dashboard/users/:userId"}>
+                    <button className={`${styles.button} ${styles.view}`}>
+                      View
+                    </button>
+                  </Link>
+                  <Link href={""}>
+                    <button className={`${styles.button} ${styles.delete}`}>
+                      Delete
+                    </button>
+                  </Link>
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <Pagination />
