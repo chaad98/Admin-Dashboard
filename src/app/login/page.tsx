@@ -5,8 +5,8 @@ const LoginPage = () => {
     <div className={styles.container}>
       <div className={styles.form}>
         <h1>Login</h1>
-        <input type="text" placeholder="Username" />
-        <input type="password" placeholder="Password" />
+        <input type="email" placeholder="email" required />
+        <input type="password" placeholder="Password" required />
         <button>Login</button>
       </div>
     </div>
