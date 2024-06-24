@@ -4,7 +4,7 @@ import styles from "./homepage.module.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { logger } from "@/utils/logger";
-import { API_ENDPOINT } from "@/utils/api";
+import { ORIGIN_ENDPOINT } from "@/utils/api";
 
 const HomePage: React.FC = () => {
   const [data, setData] = useState<string>("Connecting to API...");
@@ -19,7 +19,7 @@ const HomePage: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const responseOrigin: any = await axios.get(API_ENDPOINT);
+      const responseOrigin: any = await axios.get(ORIGIN_ENDPOINT);
 
       if (!responseOrigin) {
         throw new Error("Error connecting to API");
