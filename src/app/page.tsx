@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
         throw new Error("Error connecting to API");
       }
       setData(responseOrigin.data.success);
-      logger(responseOrigin.data.success);
+      logger("Message from origin route:", responseOrigin.data.success);
     } catch (error: any) {
       setData("Error connecting to API...");
       logger("Error fetching data:", error);

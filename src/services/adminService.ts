@@ -7,7 +7,7 @@ export const existingRunner = async () => {
     const responseRunner = await axios.get(`${ADMIN_ENPOINT}/list-users`);
 
     if (!responseRunner) {
-      logger("No existing runner!");
+      logger("No existing runner:", responseRunner);
     }
 
     return responseRunner.data;
