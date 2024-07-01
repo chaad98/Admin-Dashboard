@@ -7,8 +7,10 @@ import { existingRunner } from "@/services/adminService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
 
-const UsersPage = async () => {
-  const runners = await existingRunner();
+const UsersPage = async ({ searchParams }: any) => {
+  const q = searchParams?.q || "";
+
+  const runners = await existingRunner(q);
   logger("Runners data:", runners);
 
   return (

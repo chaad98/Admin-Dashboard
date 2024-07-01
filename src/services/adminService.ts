@@ -2,9 +2,11 @@ import axios from "axios";
 import { ADMIN_ENPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
-export const existingRunner = async () => {
+export const existingRunner = async (q: any) => {
   try {
-    const responseRunner = await axios.get(`${ADMIN_ENPOINT}/list-users`);
+    const responseRunner = await axios.get(`${ADMIN_ENPOINT}/list-users`, {
+      params: { q },
+    });
 
     if (!responseRunner) {
       logger("No existing runner:", responseRunner);
