@@ -15,3 +15,19 @@ export const existingRunner = async () => {
     logger("Error fetching runner in database:", error);
   }
 };
+
+export const deleteUser = async () => {
+  try {
+    const responseDeletedUser = await axios.post(
+      `${ADMIN_ENPOINT}/delete-users`
+    );
+
+    if (!responseDeletedUser) {
+      logger("No existing runner:", responseDeletedUser);
+    }
+
+    return responseDeletedUser.data;
+  } catch (error: any) {
+    logger("Error fetching runner in database:", error);
+  }
+};
