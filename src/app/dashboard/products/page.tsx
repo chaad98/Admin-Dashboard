@@ -9,19 +9,24 @@ import { deleteProduct, existingProduct } from "@/services/adminService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
 import { useEffect, useState } from "react";
+import Loading from "@/app/ui/dashboard/loading/loading";
 
 const ProductsPage = ({ searchParams }: any) => {
   const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const q = searchParams?.q || "";
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setIsLoading(true);
         const fetchedProducts = await existingProduct(q);
         logger("Products data:", fetchedProducts);
         setProducts(fetchedProducts);
       } catch (error) {
         logger("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchProducts();
@@ -29,11 +34,14 @@ const ProductsPage = ({ searchParams }: any) => {
 
   const handleDelete = async (productId: any) => {
     try {
+      setIsLoading(true);
       const response = await deleteProduct(productId);
       logger("Delete product response:", response);
       setProducts(products.filter((product: any) => product._id !== productId));
     } catch (error: any) {
       logger("Error deleting product:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
