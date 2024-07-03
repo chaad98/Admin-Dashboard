@@ -13,13 +13,12 @@ import Loading from "@/app/ui/dashboard/loading/loading";
 
 const UsersPage = ({ searchParams }: any) => {
   const [runners, setRunners] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const q = searchParams?.q || "";
 
   useEffect(() => {
     const fetchRunners = async () => {
       try {
-        setIsLoading(true);
         const fetchedRunners = await existingRunner(q);
         logger("Runners data:", fetchedRunners);
         setRunners(fetchedRunners);
