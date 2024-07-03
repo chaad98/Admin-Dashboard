@@ -1,17 +1,41 @@
+"use client";
+
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
 import Search from "@/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/user/user.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { existingRunner } from "@/services/adminService";
+import { deleteUser, existingRunner } from "@/services/adminService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
+import { useEffect, useState } from "react";
 
-const UsersPage = async ({ searchParams }: any) => {
+const UsersPage = ({ searchParams }: any) => {
+  const [runners, setRunners] = useState([]);
   const q = searchParams?.q || "";
 
-  const runners = await existingRunner(q);
-  logger("Runners data:", runners);
+  useEffect(() => {
+    const fetchRunners = async () => {
+      try {
+        const fetchedRunners = await existingRunner(q);
+        logger("Runners data:", fetchedRunners);
+        setRunners(fetchedRunners);
+      } catch (error) {
+        logger("Error fetching runners:", error);
+      }
+    };
+    fetchRunners();
+  }, [q]);
+
+  const handleDelete = async (userId: any) => {
+    try {
+      const response = await deleteUser(userId);
+      logger("Delete runner/user response:", response);
+      setRunners(runners.filter((runner: any) => runner._id !== userId));
+    } catch (error: any) {
+      logger("Error deleting runner/user:", error);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -56,11 +80,12 @@ const UsersPage = async ({ searchParams }: any) => {
                       View
                     </button>
                   </Link>
-                  <Link href={""}>
-                    <button className={`${styles.button} ${styles.delete}`}>
-                      Delete
-                    </button>
-                  </Link>
+                  <button
+                    className={`${styles.button} ${styles.delete}`}
+                    onClick={() => handleDelete(runner._id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </td>
             </tr>

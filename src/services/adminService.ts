@@ -18,18 +18,58 @@ export const existingRunner = async (q: any) => {
   }
 };
 
-export const deleteUser = async () => {
+export const existingProduct = async (q: any) => {
+  try {
+    const responseProduct = await axios.get(`${ADMIN_ENPOINT}/list-products`, {
+      params: { q },
+    });
+
+    if (!responseProduct) {
+      logger("No existing product:", responseProduct);
+    }
+
+    return responseProduct.data;
+  } catch (error: any) {
+    logger("Error fetching product in database:", error);
+  }
+};
+
+export const deleteUser = async (userId: any) => {
   try {
     const responseDeletedUser = await axios.post(
-      `${ADMIN_ENPOINT}/delete-users`
+      `${ADMIN_ENPOINT}/delete-users`,
+      {
+        userId,
+      }
     );
 
     if (!responseDeletedUser) {
       logger("No existing runner:", responseDeletedUser);
     }
 
-    return responseDeletedUser.data;
+    return responseDeletedUser.data.data;
   } catch (error: any) {
-    logger("Error fetching runner in database:", error);
+    logger("Error deleting runner in database:", error);
+    throw error;
+  }
+};
+
+export const deleteProduct = async (productId: any) => {
+  try {
+    const responseDeletedProduct = await axios.post(
+      `${ADMIN_ENPOINT}/delete-products`,
+      {
+        productId,
+      }
+    );
+
+    if (!responseDeletedProduct) {
+      logger("No existing product:", responseDeletedProduct);
+    }
+
+    return responseDeletedProduct.data.data;
+  } catch (error: any) {
+    logger("Error deleting product in database:", error);
+    throw error;
   }
 };

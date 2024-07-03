@@ -1,10 +1,42 @@
+"use client";
+
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
 import styles from "@/app/ui/dashboard/product/product.module.css";
 import Search from "@/app/ui/dashboard/search/search";
 import Link from "next/link";
 import Image from "next/image";
+import { deleteProduct, existingProduct } from "@/services/adminService";
+import { logger } from "@/utils/logger";
+import { formattedDate } from "@/utils/date";
+import { useEffect, useState } from "react";
 
-const ProductsPage = () => {
+const ProductsPage = ({ searchParams }: any) => {
+  const [products, setProducts] = useState([]);
+  const q = searchParams?.q || "";
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const fetchedProducts = await existingProduct(q);
+        logger("Products data:", fetchedProducts);
+        setProducts(fetchedProducts);
+      } catch (error) {
+        logger("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, [q]);
+
+  const handleDelete = async (productId: any) => {
+    try {
+      const response = await deleteProduct(productId);
+      logger("Delete product response:", response);
+      setProducts(products.filter((product: any) => product._id !== productId));
+    } catch (error: any) {
+      logger("Error deleting product:", error);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -16,7 +48,7 @@ const ProductsPage = () => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <td>Title</td>
+            <td>Name</td>
             <td>Description</td>
             <td>Price</td>
             <td>Created at</td>
@@ -25,36 +57,40 @@ const ProductsPage = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className={styles.product}>
-              <Image
-                src={"/noproduct.jpg"}
-                alt=""
-                width={40}
-                height={40}
-                className={styles.productImage}
-              />
-              Mineral water
-            </td>
-            <td>Clean water taken from top of the mountain</td>
-            <td>RM 2.00</td>
-            <td>20/6/2024</td>
-            <td>10</td>
-            <td>
-              <div className={styles.buttons}>
-                <Link href={"/dashboard/products/:productId"}>
-                  <button className={`${styles.button} ${styles.view}`}>
-                    View
-                  </button>
-                </Link>
-                <Link href={""}>
-                  <button className={`${styles.button} ${styles.delete}`}>
+          {products?.map((product: any) => (
+            <tr key={product._id}>
+              <td className={styles.product}>
+                <Image
+                  src={product.image || "/noproduct.jpg"}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className={styles.productImage}
+                />
+                {product.name}
+              </td>
+              <td>{product.description}</td>
+              <td>{product.price}</td>
+              <td>{formattedDate(product.createdAt)}</td>
+              <td>{product.stock}</td>
+              <td>
+                <div className={styles.buttons}>
+                  <Link href={`/dashboard/products/${product._id}`}>
+                    <button className={`${styles.button} ${styles.view}`}>
+                      View
+                    </button>
+                  </Link>
+
+                  <button
+                    className={`${styles.button} ${styles.delete}`}
+                    onClick={() => handleDelete(product._id)}
+                  >
                     Delete
                   </button>
-                </Link>
-              </div>
-            </td>
-          </tr>
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <Pagination />
