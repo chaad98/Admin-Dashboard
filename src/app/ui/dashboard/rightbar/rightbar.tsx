@@ -7,7 +7,13 @@ const Rightbar = () => {
     <div className={styles.container}>
       <div className={styles.item}>
         <div className={styles.bgContainer}>
-          <Image src={"/daas.png"} alt="" fill className={styles.imageLayout} />
+          <Image
+            src={"/daas.png"}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className={styles.imageLayout}
+          />
         </div>
         <div className={styles.texts}>
           <span className={styles.notification}>🔥 Available Now!</span>
@@ -27,7 +33,13 @@ const Rightbar = () => {
       </div>
       <div className={styles.item}>
         <div className={styles.bgContainer}>
-          <Image src={"/daas.png"} alt="" fill className={styles.imageLayout} />
+          <Image
+            src={"/daas.png"}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className={styles.imageLayout}
+          />
         </div>
         <div className={styles.texts}>
           <span className={styles.notification}>🚀 Coming Soon</span>
