@@ -16,8 +16,9 @@ const Search = ({ placeholder }: any) => {
   logger("pathName:", pathName);
 
   const handleSearch = useDebouncedCallback((e: any) => {
-    const params = new URLSearchParams(searchParams);
-    logger("params:", params);
+    let params: any;
+    params = new URLSearchParams(searchParams);
+    params.set("page", 1);
 
     if (e.target.value) {
       e.target.value.length >= 3 && params.set("q", e.target.value);
@@ -26,7 +27,7 @@ const Search = ({ placeholder }: any) => {
     }
 
     replace(`${pathName}?${params}`);
-  }, 300);
+  }, 500);
 
   return (
     <div className={styles.container}>

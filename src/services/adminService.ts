@@ -19,10 +19,10 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
-export const existingRunner = async (q: any) => {
+export const existingRunner = async (q: any, page: any) => {
   try {
     const responseRunner = await axios.get(`${ADMIN_ENDPOINT}/list-users`, {
-      params: { q },
+      params: { q, page },
     });
 
     if (!responseRunner) {

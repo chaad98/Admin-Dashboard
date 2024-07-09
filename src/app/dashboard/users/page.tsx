@@ -13,23 +13,28 @@ import Loading from "@/app/ui/dashboard/loading/loading";
 
 const UsersPage = ({ searchParams }: any) => {
   const [runners, setRunners] = useState([]);
+  const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const q = searchParams?.q || "";
+  const page = searchParams?.page || 1;
 
   useEffect(() => {
-    const fetchRunners = async () => {
-      try {
-        const fetchedRunners = await existingRunner(q);
-        logger("Runners data:", fetchedRunners);
-        setRunners(fetchedRunners);
-      } catch (error) {
-        logger("Error fetching runners:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchRunners();
-  }, [q]);
+  }, [q, page]);
+
+  const fetchRunners = async () => {
+    try {
+      const fetchedRunners = await existingRunner(q, page);
+      logger("Runners data:", fetchedRunners);
+      logger("Total documents:", fetchedRunners.total);
+      setRunners(fetchedRunners.data);
+      setTotal(fetchedRunners.total);
+    } catch (error) {
+      logger("Error fetching runners:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleDelete = async (userId: any) => {
     try {
@@ -107,7 +112,7 @@ const UsersPage = ({ searchParams }: any) => {
           )}
         </tbody>
       </table>
-      <Pagination />
+      <Pagination count={total} />
     </div>
   );
 };
