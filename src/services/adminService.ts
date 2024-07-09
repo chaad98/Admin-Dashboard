@@ -1,10 +1,27 @@
 import axios from "axios";
-import { ADMIN_ENPOINT } from "@/utils/api";
+import { ADMIN_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
+
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const responseLogin = await axios.post(`${ADMIN_ENDPOINT}/login`, {
+      email,
+      password,
+    });
+
+    if (!responseLogin) {
+      logger("No response from login:", responseLogin);
+    }
+
+    return responseLogin.data;
+  } catch (error: any) {
+    logger("Error login occurred:", error.message);
+  }
+};
 
 export const existingRunner = async (q: any) => {
   try {
-    const responseRunner = await axios.get(`${ADMIN_ENPOINT}/list-users`, {
+    const responseRunner = await axios.get(`${ADMIN_ENDPOINT}/list-users`, {
       params: { q },
     });
 
@@ -20,7 +37,7 @@ export const existingRunner = async (q: any) => {
 
 export const existingProduct = async (q: any) => {
   try {
-    const responseProduct = await axios.get(`${ADMIN_ENPOINT}/list-products`, {
+    const responseProduct = await axios.get(`${ADMIN_ENDPOINT}/list-products`, {
       params: { q },
     });
 
@@ -37,7 +54,7 @@ export const existingProduct = async (q: any) => {
 export const deleteUser = async (userId: any) => {
   try {
     const responseDeletedUser = await axios.post(
-      `${ADMIN_ENPOINT}/delete-users`,
+      `${ADMIN_ENDPOINT}/delete-users`,
       {
         userId,
       }
@@ -57,7 +74,7 @@ export const deleteUser = async (userId: any) => {
 export const deleteProduct = async (productId: any) => {
   try {
     const responseDeletedProduct = await axios.post(
-      `${ADMIN_ENPOINT}/delete-products`,
+      `${ADMIN_ENDPOINT}/delete-products`,
       {
         productId,
       }
