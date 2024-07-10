@@ -16,9 +16,10 @@ const Search = ({ placeholder }: any) => {
   logger("pathName:", pathName);
 
   const handleSearch = useDebouncedCallback((e: any) => {
-    let params: any;
-    params = new URLSearchParams(searchParams);
-    params.set("page", 1);
+    const params = new URLSearchParams(
+      searchParams ? searchParams.toString() : ""
+    );
+    params.set("page", "1");
 
     if (e.target.value) {
       e.target.value.length >= 3 && params.set("q", e.target.value);
