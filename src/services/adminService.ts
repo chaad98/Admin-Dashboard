@@ -35,10 +35,10 @@ export const existingRunner = async (q: any, page: any) => {
   }
 };
 
-export const existingProduct = async (q: any) => {
+export const existingProduct = async (q: any, page: any) => {
   try {
     const responseProduct = await axios.get(`${ADMIN_ENDPOINT}/list-products`, {
-      params: { q },
+      params: { q, page },
     });
 
     if (!responseProduct) {

@@ -1,10 +1,10 @@
 "use client";
 
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
-import styles from "@/app/ui/dashboard/product/product.module.css";
 import Search from "@/app/ui/dashboard/search/search";
-import Link from "next/link";
+import styles from "@/app/ui/dashboard/product/product.module.css";
 import Image from "next/image";
+import Link from "next/link";
 import { deleteProduct, existingProduct } from "@/services/adminService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
@@ -13,23 +13,27 @@ import Loading from "@/app/ui/dashboard/loading/loading";
 
 const ProductsPage = ({ searchParams }: any) => {
   const [products, setProducts] = useState([]);
+  const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const q = searchParams?.q || "";
+  const page = searchParams?.page || 1;
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const fetchedProducts = await existingProduct(q);
-        logger("Products data:", fetchedProducts);
-        setProducts(fetchedProducts);
-      } catch (error) {
-        logger("Error fetching products:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchProducts();
-  }, [q]);
+  }, [q, page]);
+
+  const fetchProducts = async () => {
+    try {
+      const fetchedProducts = await existingProduct(q, page);
+      logger("Products data:", fetchedProducts);
+      setProducts(fetchedProducts.data);
+      setTotal(fetchedProducts.total);
+    } catch (error) {
+      logger("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleDelete = async (productId: any) => {
     try {
@@ -108,7 +112,7 @@ const ProductsPage = ({ searchParams }: any) => {
           )}
         </tbody>
       </table>
-      <Pagination />
+      <Pagination count={total} />
     </div>
   );
 };
