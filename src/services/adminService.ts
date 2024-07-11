@@ -1,10 +1,10 @@
 import axios from "axios";
-import { ADMIN_ENDPOINT } from "@/utils/api";
+import { ADMIN_ENDPOINT, USER_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
 export const loginUser = async (email: string, password: string) => {
   try {
-    const responseLogin = await axios.post(`${ADMIN_ENDPOINT}/login`, {
+    const responseLogin = await axios.post(`${USER_ENDPOINT}/login`, {
       email,
       password,
     });
@@ -15,7 +15,13 @@ export const loginUser = async (email: string, password: string) => {
 
     return responseLogin.data;
   } catch (error: any) {
-    logger("Error login occurred:", error.message);
+    logger("Error login occurred from admin service:", error);
+
+    if (error.code === "ERR_NETWORK") {
+      throw Error("Server down!");
+    }
+
+    throw Error(error.response.data.error || error.response.data.warning);
   }
 };
 
