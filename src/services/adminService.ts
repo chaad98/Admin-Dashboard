@@ -25,6 +25,16 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
+export const logoutUser = async () => {
+  try {
+    const responseLogout = await axios.post(`${USER_ENDPOINT}/logout`);
+
+    return responseLogout.data;
+  } catch (error: any) {
+    logger("Error during logout process:", error.message);
+  }
+};
+
 export const existingRunner = async (q: any, page: any) => {
   try {
     const responseRunner = await axios.get(`${ADMIN_ENDPOINT}/list-users`, {
