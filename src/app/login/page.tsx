@@ -21,8 +21,8 @@ const LoginPage = () => {
       const response = await loginUser(email, password);
       logger("Response here:", response);
 
-      if (!response) {
-        toast.error("Invalid credentials");
+      if (response.data.isAdmin === false) {
+        return toast.warning("User is not an admin!");
       }
 
       setToken(response.token);
