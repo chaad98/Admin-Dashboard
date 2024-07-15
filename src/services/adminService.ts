@@ -25,13 +25,18 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
-export const logoutUser = async () => {
+export const logoutUser = async (token: any) => {
   try {
-    const responseLogout = await axios.post(`${USER_ENDPOINT}/logout`);
+    const responseLogout = await axios.delete(`${USER_ENDPOINT}/logout`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    return responseLogout.data;
+    return responseLogout;
   } catch (error: any) {
     logger("Error during logout process:", error.message);
+    throw error;
   }
 };
 
