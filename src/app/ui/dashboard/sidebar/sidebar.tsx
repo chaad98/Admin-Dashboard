@@ -1,3 +1,5 @@
+"use client";
+
 import {
   MdAnalytics,
   MdAttachMoney,
@@ -14,6 +16,11 @@ import {
 import styles from "./sidebar.module.css";
 import MenuLink from "./menuLink/menuLink";
 import Image from "next/image";
+import { logoutUser } from "@/services/adminService";
+import { logger } from "@/utils/logger";
+import { useRouter } from "next/navigation";
+import useAuthStore from "@/store/useAuthStore";
+import { toast } from "react-toastify";
 
 const menuItems = [
   {
@@ -84,6 +91,25 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
+  const router = useRouter();
+  const { token, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    try {
+      const responseLogout = await logoutUser(token);
+      logger("Response:", responseLogout);
+
+      if (responseLogout.status === 200) {
+        logger("Response logout:", responseLogout.data.message);
+        toast.success(responseLogout.data.message);
+        logout();
+        router.push("/login");
+      }
+    } catch (error: any) {
+      logger("Failed to logout:", error.message);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.user}>
@@ -109,7 +135,7 @@ const Sidebar = () => {
           </li>
         ))}
       </ul>
-      <button className={styles.btnLogout}>
+      <button className={styles.btnLogout} onClick={handleLogout}>
         <MdLogout />
         Logout
       </button>
