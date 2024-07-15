@@ -67,6 +67,22 @@ export const existingProduct = async (q: any, page: any) => {
   }
 };
 
+export const existingStore = async (q: any, page: any) => {
+  try {
+    const responseStore = await axios.get(`${ADMIN_ENDPOINT}/list-stores`, {
+      params: { q, page },
+    });
+
+    if (!responseStore) {
+      logger("No existing store:", responseStore);
+    }
+
+    return responseStore.data;
+  } catch (error: any) {
+    logger("Error fetching store in database:", error);
+  }
+};
+
 export const deleteUser = async (userId: any) => {
   try {
     const responseDeletedUser = await axios.post(
@@ -101,6 +117,26 @@ export const deleteProduct = async (productId: any) => {
     }
 
     return responseDeletedProduct.data.data;
+  } catch (error: any) {
+    logger("Error deleting product in database:", error);
+    throw error;
+  }
+};
+
+export const deleteStores = async (storesId: any) => {
+  try {
+    const responseDeletedStores = await axios.post(
+      `${ADMIN_ENDPOINT}/delete-stores`,
+      {
+        storesId,
+      }
+    );
+
+    if (!responseDeletedStores) {
+      logger("No existing stores:", responseDeletedStores);
+    }
+
+    return responseDeletedStores.data.data;
   } catch (error: any) {
     logger("Error deleting product in database:", error);
     throw error;
