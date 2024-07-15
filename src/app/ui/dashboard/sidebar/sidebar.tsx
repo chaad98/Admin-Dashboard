@@ -9,6 +9,7 @@ import {
   MdShoppingBag,
   MdSupervisedUserCircle,
   MdWork,
+  MdOutlineStorefront,
 } from "react-icons/md";
 import styles from "./sidebar.module.css";
 import MenuLink from "./menuLink/menuLink";
@@ -32,6 +33,11 @@ const menuItems = [
         title: "Products",
         path: "/dashboard/products",
         icon: <MdShoppingBag />,
+      },
+      {
+        title: "Stores",
+        path: "/dashboard/stores",
+        icon: <MdOutlineStorefront />,
       },
       {
         title: "Transactions",
