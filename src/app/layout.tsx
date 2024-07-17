@@ -20,7 +20,11 @@ export default function RootLayout({ children }: WithChildren) {
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <ToastContainer position="top-center" pauseOnHover={false} />
+        <ToastContainer
+          position="top-center"
+          pauseOnHover={false}
+          closeOnClick
+        />
       </body>
     </html>
   );
