@@ -4,6 +4,14 @@
   margin-top: 20px;
 }
 
+.noUserContainer {
+  display: flex;
+  gap: 50px;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
 .infoContainer {
   flex: 1;
   background-color: var(--bgSoft);
