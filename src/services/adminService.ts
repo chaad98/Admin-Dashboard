@@ -78,6 +78,29 @@ export const viewStaffInfo = async (token: any, userId: any) => {
   }
 };
 
+export const updateStaffInfo = async (token: any, objData: any) => {
+  try {
+    const responseUpdateStaff = await axios.put(
+      `${ADMIN_ENDPOINT}/update-user`,
+      objData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (responseUpdateStaff) {
+      logger("Updated user data:", responseUpdateStaff);
+    }
+
+    return responseUpdateStaff;
+  } catch (error: any) {
+    logger("Error updating runner/staff in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const existingStaff = async (q: any, page: any) => {
   try {
     const responseStaff = await axios.get(`${ADMIN_ENDPOINT}/list-users`, {
