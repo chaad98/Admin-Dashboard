@@ -106,7 +106,7 @@ const Sidebar = () => {
         router.push("/login");
       }
     } catch (error: any) {
-      logger("Failed to logout:", error.message);
+      toast.error(error.message);
     }
   };
 
