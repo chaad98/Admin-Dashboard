@@ -58,19 +58,20 @@ export const newStaff = async (objData: any) => {
   }
 };
 
-export const existingRunner = async (q: any, page: any) => {
+export const existingStaff = async (q: any, page: any) => {
   try {
-    const responseRunner = await axios.get(`${ADMIN_ENDPOINT}/list-users`, {
+    const responseStaff = await axios.get(`${ADMIN_ENDPOINT}/list-users`, {
       params: { q, page },
     });
 
-    if (!responseRunner) {
-      logger("No existing runner:", responseRunner);
+    if (!responseStaff) {
+      logger("No existing staff:", responseStaff);
     }
 
-    return responseRunner.data;
+    return responseStaff.data;
   } catch (error: any) {
-    logger("Error fetching runner in database:", error);
+    logger("Error fetching staff in database:", error);
+    throw error;
   }
 };
 

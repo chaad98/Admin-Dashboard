@@ -5,33 +5,35 @@ import Search from "@/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/user/user.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { deleteUser, existingRunner } from "@/services/adminService";
+import { deleteUser, existingStaff } from "@/services/adminService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
 import { useEffect, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const UsersPage = ({ searchParams }: any) => {
-  const [runners, setRunners] = useState([]);
+  const [staffs, setStaffs] = useState([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
   useEffect(() => {
-    fetchRunners();
+    fetchStaff();
   }, [q, page]);
 
-  const fetchRunners = async () => {
+  const fetchStaff = async () => {
     try {
-      const fetchedRunners = await existingRunner(q, page);
-      logger("Runners data:", fetchedRunners);
-      logger("Total documents:", fetchedRunners.total);
-      setRunners(fetchedRunners.data);
-      setTotal(fetchedRunners.total);
+      const fetchedStaffs = await existingStaff(q, page);
+      logger("Staffs data:", fetchedStaffs);
+      logger("Total documents:", fetchedStaffs.total);
+      setStaffs(fetchedStaffs.data);
+      setTotal(fetchedStaffs.total);
     } catch (error) {
-      logger("Error fetching runners:", error);
+      logger("Error fetching staff:", error);
     } finally {
       setIsLoading(false);
     }
@@ -41,11 +43,12 @@ const UsersPage = ({ searchParams }: any) => {
     try {
       setIsLoading(true);
       const response = await deleteUser(userId);
-      logger("Delete runner/user response:", response.data.message);
+      logger("Delete staff/user response:", response.data.message);
       toast.success(response.data.message);
-      setRunners(runners.filter((runner: any) => runner._id !== userId));
+      setStaffs(staffs.filter((staff: any) => staff._id !== userId));
+      router.push("/dashboard/users");
     } catch (error: any) {
-      toast.error("Error deleting runner/user:", error.message);
+      toast.error("Error deleting staff/user:", error.message);
     } finally {
       setIsLoading(false);
     }
@@ -78,32 +81,32 @@ const UsersPage = ({ searchParams }: any) => {
               </td>
             </tr>
           ) : (
-            runners.map((runner: any) => (
-              <tr key={runner._id}>
+            staffs.map((staff: any) => (
+              <tr key={staff._id}>
                 <td className={styles.user}>
                   <Image
-                    src={runner.profilePicture || "/noavatar.png"}
+                    src={staff.profilePicture || "/noavatar.png"}
                     alt=""
                     width={40}
                     height={40}
                     className={styles.userImage}
                   />
-                  {runner.name}
+                  {staff.name}
                 </td>
-                <td>{runner.email}</td>
-                <td>{formattedDate(runner.createdAt)}</td>
-                <td>{runner.isAdmin ? "Admin" : "Runner"}</td>
-                <td>{runner.isActive ? "Active" : "Inactive"}</td>
+                <td>{staff.email}</td>
+                <td>{formattedDate(staff.createdAt)}</td>
+                <td>{staff.isAdmin ? "Admin" : "Runner"}</td>
+                <td>{staff.isActive ? "Active" : "Inactive"}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/users/${runner._id}`}>
+                    <Link href={`/dashboard/users/${staff._id}`}>
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>
                     </Link>
                     <button
                       className={`${styles.button} ${styles.delete}`}
-                      onClick={() => handleDelete(runner._id)}
+                      onClick={() => handleDelete(staff._id)}
                     >
                       Delete
                     </button>
