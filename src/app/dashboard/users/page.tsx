@@ -24,14 +24,26 @@ const UsersPage = ({ searchParams }: any) => {
   const [isLoading, setIsLoading] = useState(true);
   const hasFetched = useRef(false);
   const router = useRouter();
-  const { token } = useAuthStore();
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
   useEffect(() => {
     if (!hasFetched.current) {
+      if (!q && page) {
+        logger("q is not here:", q);
+        fetchStaff();
+        hasFetched.current = true;
+        logger("hasFetched value:", hasFetched);
+      }
+    }
+  }, [q, page]);
+
+  useEffect(() => {
+    if (q && page) {
+      console.log("q and page is here");
       fetchStaff();
-      hasFetched.current = true;
+      hasFetched.current = false;
+      console.log("hasFetched value:", hasFetched);
     }
   }, [q, page]);
 
@@ -46,16 +58,6 @@ const UsersPage = ({ searchParams }: any) => {
       toast.error(error.message);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const singleStaff = async (token: any, userId: any) => {
-    try {
-      const response = await viewStaffInfo(token, userId);
-      logger("Staff data:", response.data);
-      router.push(`/dashboard/users/${response.data._id}`);
-    } catch (error: any) {
-      toast.error(error.message);
     }
   };
 
@@ -119,12 +121,11 @@ const UsersPage = ({ searchParams }: any) => {
                 <td>{staff.isActive ? "Active" : "Inactive"}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <button
-                      className={`${styles.button} ${styles.view}`}
-                      onClick={() => singleStaff(token, staff._id)}
-                    >
-                      View
-                    </button>
+                    <Link href={`/dashboard/users/${staff._id}`}>
+                      <button className={`${styles.button} ${styles.view}`}>
+                        View
+                      </button>
+                    </Link>
 
                     <button
                       className={`${styles.button} ${styles.delete}`}
