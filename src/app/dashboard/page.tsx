@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Card from "../ui/dashboard/card/card";
 import Chart from "../ui/dashboard/chart/chart";
 import styles from "../ui/dashboard/dashboard.module.css";
@@ -11,9 +11,13 @@ import { logger } from "@/utils/logger";
 
 const DashboardPage = () => {
   const { token, user } = useAuthStore();
+  const hasFetched = useRef(false);
   useEffect(() => {
-    logger("Token after login:", token);
-    logger("User after login:", user);
+    if (!hasFetched.current) {
+      logger("Token after login:", token);
+      logger("User after login:", user);
+      hasFetched.current = true;
+    }
   }, [token, user]);
 
   return (
