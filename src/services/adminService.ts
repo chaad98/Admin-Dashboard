@@ -40,6 +40,24 @@ export const logoutUser = async (token: any) => {
   }
 };
 
+export const newStaff = async (objData: any) => {
+  try {
+    const responseNewStaff = await axios.post(
+      `${ADMIN_ENDPOINT}/new-staff`,
+      objData
+    );
+
+    if (responseNewStaff) {
+      logger("New staff added:", responseNewStaff);
+    }
+
+    return responseNewStaff;
+  } catch (error: any) {
+    logger("Error creating runner/staff in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const existingRunner = async (q: any, page: any) => {
   try {
     const responseRunner = await axios.get(`${ADMIN_ENDPOINT}/list-users`, {
