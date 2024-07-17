@@ -71,7 +71,7 @@ export const existingStaff = async (q: any, page: any) => {
     return responseStaff.data;
   } catch (error: any) {
     logger("Error fetching staff in database:", error);
-    throw error;
+    throw Error(error.response.data.error || error.response.data.message);
   }
 };
 
