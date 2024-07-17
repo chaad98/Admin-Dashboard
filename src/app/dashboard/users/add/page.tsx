@@ -1,27 +1,100 @@
+"use client";
+
 import styles from "@/app/ui/dashboard/user/addUser/addUser.module.css";
+import { newStaff } from "@/services/adminService";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const AddUserPage = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [isAdmin, setIsAdmin] = useState("false");
+  const [isActive, setIsActive] = useState("false");
+  const [address, setAddress] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const objClient = {
+        name,
+        email,
+        mobile,
+        address,
+        password,
+        isAdmin,
+        isActive,
+      };
+
+      const response = await newStaff(objClient);
+
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        router.push("/dashboard/users");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <form action="" className={styles.form}>
-        <input type="text" placeholder="username" name="username" required />
-        <input type="email" placeholder="email" name="email" required />
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <input
+          type="name"
+          placeholder="name"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="email"
+          placeholder="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
         <input
           type="password"
           placeholder="password"
           name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <input type="phone" placeholder="phone" name="phone" required />
-        <select name="isAdmin" id="isAdmin">
+        <input
+          type="phone"
+          placeholder="phone"
+          name="phone"
+          value={mobile}
+          onChange={(e) => setMobile(e.target.value)}
+          required
+        />
+        <select
+          name="isAdmin"
+          id="isAdmin"
+          value={isAdmin}
+          onChange={(e) => setIsAdmin(e.target.value)}
+        >
           <option value="false" selected>
             Is Admin?
           </option>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
-        <select name="isActive" id="isActive">
-          <option value="true" selected>
+        <select
+          name="isActive"
+          id="isActive"
+          value={isActive}
+          onChange={(e) => setIsActive(e.target.value)}
+        >
+          <option value="false" selected>
             Is Active?
           </option>
           <option value="true">Yes</option>
@@ -32,6 +105,8 @@ const AddUserPage = () => {
           id="address"
           rows={16}
           placeholder="Address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
         ></textarea>
         <button type="submit">Submit</button>
       </form>
