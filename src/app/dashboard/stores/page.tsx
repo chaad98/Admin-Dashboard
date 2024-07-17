@@ -8,18 +8,23 @@ import { deleteStores, existingStore } from "@/services/adminService";
 import { formattedDate } from "@/utils/date";
 import { logger } from "@/utils/logger";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 const StoresPage = ({ searchParams }: any) => {
   const [stores, setStores] = useState([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const hasfetched = useRef(false);
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
   useEffect(() => {
-    fetchStores();
+    if (!hasfetched.current) {
+      fetchStores();
+      hasfetched.current = true;
+    }
   }, [q, page]);
 
   const fetchStores = async () => {
@@ -29,8 +34,8 @@ const StoresPage = ({ searchParams }: any) => {
       logger("Total documents:", fetchedStores.total);
       setStores(fetchedStores.data);
       setTotal(fetchedStores.total);
-    } catch (error) {
-      logger("Error fetching stores:", error);
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
