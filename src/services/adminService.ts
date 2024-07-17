@@ -35,8 +35,8 @@ export const logoutUser = async (token: any) => {
 
     return responseLogout;
   } catch (error: any) {
-    logger("Error during logout process:", error.message);
-    throw error;
+    logger("Error during logout process:", error);
+    throw Error(error.response.data.error || error.response.data.message);
   }
 };
 
@@ -54,6 +54,26 @@ export const newStaff = async (objData: any) => {
     return responseNewStaff;
   } catch (error: any) {
     logger("Error creating runner/staff in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
+export const viewStaffInfo = async (token: any, userId: any) => {
+  try {
+    const responseViewStaff = await axios.get(`${ADMIN_ENDPOINT}/single-user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { userId },
+    });
+
+    if (responseViewStaff) {
+      logger("Staff info:", responseViewStaff);
+    }
+
+    return responseViewStaff.data;
+  } catch (error: any) {
+    logger("Error viewing runner/staff in database:", error);
     throw Error(error.response.data.error || error.response.data.message);
   }
 };
