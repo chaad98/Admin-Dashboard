@@ -8,7 +8,7 @@ import Link from "next/link";
 import { deleteUser, existingStaff } from "@/services/adminService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -17,12 +17,16 @@ const UsersPage = ({ searchParams }: any) => {
   const [staffs, setStaffs] = useState([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const hasFetched = useRef(false);
   const router = useRouter();
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
   useEffect(() => {
-    fetchStaff();
+    if (!hasFetched.current) {
+      fetchStaff();
+      hasFetched.current = true;
+    }
   }, [q, page]);
 
   const fetchStaff = async () => {
@@ -32,8 +36,8 @@ const UsersPage = ({ searchParams }: any) => {
       logger("Total documents:", fetchedStaffs.total);
       setStaffs(fetchedStaffs.data);
       setTotal(fetchedStaffs.total);
-    } catch (error) {
-      logger("Error fetching staff:", error);
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
