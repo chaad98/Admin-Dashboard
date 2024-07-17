@@ -115,14 +115,14 @@ export const deleteUser = async (userId: any) => {
       }
     );
 
-    if (!responseDeletedUser) {
-      logger("No existing runner:", responseDeletedUser);
+    if (responseDeletedUser) {
+      logger("Deleted runner:", responseDeletedUser);
     }
 
-    return responseDeletedUser.data.data;
+    return responseDeletedUser;
   } catch (error: any) {
     logger("Error deleting runner in database:", error);
-    throw error;
+    throw Error(error.response.data.error || error.response.data.message);
   }
 };
 
