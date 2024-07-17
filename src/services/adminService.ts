@@ -98,13 +98,14 @@ export const existingStore = async (q: any, page: any) => {
       params: { q, page },
     });
 
-    if (!responseStore) {
-      logger("No existing store:", responseStore);
+    if (responseStore) {
+      logger("Store information from database:", responseStore);
     }
 
     return responseStore.data;
   } catch (error: any) {
     logger("Error fetching store in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
   }
 };
 
