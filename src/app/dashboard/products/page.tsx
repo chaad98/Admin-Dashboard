@@ -8,18 +8,23 @@ import Link from "next/link";
 import { deleteProduct, existingProduct } from "@/services/adminService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
+import { toast } from "react-toastify";
 
 const ProductsPage = ({ searchParams }: any) => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const hasFetched = useRef(false);
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
   useEffect(() => {
-    fetchProducts();
+    if (!hasFetched.current) {
+      fetchProducts();
+      hasFetched.current = true;
+    }
   }, [q, page]);
 
   const fetchProducts = async () => {
@@ -28,8 +33,8 @@ const ProductsPage = ({ searchParams }: any) => {
       logger("Products data:", fetchedProducts);
       setProducts(fetchedProducts.data);
       setTotal(fetchedProducts.total);
-    } catch (error) {
-      logger("Error fetching products:", error);
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
