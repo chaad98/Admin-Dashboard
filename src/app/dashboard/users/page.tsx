@@ -10,6 +10,7 @@ import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
 import { useEffect, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
+import { toast } from "react-toastify";
 
 const UsersPage = ({ searchParams }: any) => {
   const [runners, setRunners] = useState([]);
@@ -40,10 +41,11 @@ const UsersPage = ({ searchParams }: any) => {
     try {
       setIsLoading(true);
       const response = await deleteUser(userId);
-      logger("Delete runner/user response:", response);
+      logger("Delete runner/user response:", response.data.message);
+      toast.success(response.data.message);
       setRunners(runners.filter((runner: any) => runner._id !== userId));
     } catch (error: any) {
-      logger("Error deleting runner/user:", error);
+      toast.error("Error deleting runner/user:", error.message);
     } finally {
       setIsLoading(false);
     }
