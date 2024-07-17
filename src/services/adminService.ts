@@ -81,13 +81,14 @@ export const existingProduct = async (q: any, page: any) => {
       params: { q, page },
     });
 
-    if (!responseProduct) {
-      logger("No existing product:", responseProduct);
+    if (responseProduct) {
+      logger("Product information from database:", responseProduct);
     }
 
     return responseProduct.data;
   } catch (error: any) {
     logger("Error fetching product in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
   }
 };
 
