@@ -43,7 +43,7 @@ export const logoutUser = async (token: any) => {
 export const newStaff = async (objData: any) => {
   try {
     const responseNewStaff = await axios.post(
-      `${ADMIN_ENDPOINT}/new-staff`,
+      `${ADMIN_ENDPOINT}/new-user`,
       objData
     );
 
