@@ -11,8 +11,8 @@ const AddUserPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [mobile, setMobile] = useState("");
-  const [isAdmin, setIsAdmin] = useState("false");
-  const [isActive, setIsActive] = useState("false");
+  const [isAdmin, setIsAdmin] = useState("");
+  const [isActive, setIsActive] = useState("");
   const [address, setAddress] = useState("");
   const router = useRouter();
 
@@ -20,6 +20,12 @@ const AddUserPage = () => {
     e.preventDefault();
 
     try {
+      if (!isAdmin || !isActive) {
+        return toast.warning(
+          "Please select both options admin and active status value"
+        );
+      }
+
       const objClient = {
         name,
         email,
@@ -82,9 +88,7 @@ const AddUserPage = () => {
           value={isAdmin}
           onChange={(e) => setIsAdmin(e.target.value)}
         >
-          <option value="false" selected>
-            Is Admin?
-          </option>
+          <option selected>Is Admin?</option>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
@@ -94,9 +98,7 @@ const AddUserPage = () => {
           value={isActive}
           onChange={(e) => setIsActive(e.target.value)}
         >
-          <option value="false" selected>
-            Is Active?
-          </option>
+          <option selected>Is Active?</option>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
