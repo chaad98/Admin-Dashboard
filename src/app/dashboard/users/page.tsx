@@ -5,18 +5,13 @@ import Search from "@/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/user/user.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  deleteUser,
-  existingStaff,
-  viewStaffInfo,
-} from "@/services/adminService";
+import { deleteUser, existingStaff } from "@/services/adminService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
 import { useEffect, useRef, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import useAuthStore from "@/store/useAuthStore";
 
 const UsersPage = ({ searchParams }: any) => {
   const [staffs, setStaffs] = useState([]);
