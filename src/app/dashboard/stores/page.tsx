@@ -11,19 +11,34 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const StoresPage = ({ searchParams }: any) => {
   const [stores, setStores] = useState([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const hasfetched = useRef(false);
+  const hasFetched = useRef(false);
+  const router = useRouter();
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
   useEffect(() => {
-    if (!hasfetched.current) {
+    if (!hasFetched.current) {
+      if (!q && page) {
+        logger("q is not here:", q);
+        fetchStores();
+        hasFetched.current = true;
+        logger("hasFetched value:", hasFetched);
+      }
+    }
+  }, [q, page]);
+
+  useEffect(() => {
+    if (q && page) {
+      console.log("q and page is here");
       fetchStores();
-      hasfetched.current = true;
+      hasFetched.current = false;
+      console.log("hasFetched value:", hasFetched);
     }
   }, [q, page]);
 
@@ -47,6 +62,7 @@ const StoresPage = ({ searchParams }: any) => {
       const response = await deleteStores(storeId);
       logger("Deleted store response:", response);
       setStores(stores.filter((store: any) => store._id !== storeId));
+      router.push("/dashboard/stores");
     } catch (error: any) {
       logger("Error deleting store:", error);
     } finally {
