@@ -58,6 +58,24 @@ export const newStaff = async (objData: any) => {
   }
 };
 
+export const newStore = async (objData: any) => {
+  try {
+    const responseNewStore = await axios.post(
+      `${ADMIN_ENDPOINT}/new-store`,
+      objData
+    );
+
+    if (responseNewStore) {
+      logger("New store added:", responseNewStore);
+    }
+
+    return responseNewStore;
+  } catch (error: any) {
+    logger("Error creating store in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const viewStaffInfo = async (token: any, userId: any) => {
   try {
     const responseViewStaff = await axios.get(`${ADMIN_ENDPOINT}/single-user`, {
