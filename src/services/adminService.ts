@@ -226,6 +226,8 @@ export const deleteStores = async (storesId: any) => {
     return responseDeletedStores.data.data;
   } catch (error: any) {
     logger("Error deleting product in database:", error);
-    throw error;
+    throw Error(
+      error.response.data.error || error.response.data.message || error.message
+    );
   }
 };
