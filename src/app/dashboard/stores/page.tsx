@@ -64,7 +64,8 @@ const StoresPage = ({ searchParams }: any) => {
       setStores(stores.filter((store: any) => store._id !== storeId));
       router.push("/dashboard/stores");
     } catch (error: any) {
-      logger("Error deleting store:", error);
+      logger("Error deleting store:", error.message);
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
