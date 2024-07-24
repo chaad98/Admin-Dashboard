@@ -1,9 +1,10 @@
 "use client";
 
 import styles from "@/app/ui/dashboard/stores/addStore/addStore.module.css";
-import { newStore } from "@/services/adminService";
+import { fetchLatestRetailCode, newStore } from "@/services/adminService";
+import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 
@@ -31,6 +32,37 @@ const AddStorePage = () => {
   const [businessImage, setBusinessImage] = useState<File | null>(null);
   const [product, setProduct] = useState("");
   const router = useRouter();
+  const hasFetched = useRef(false);
+  const { token } = useAuthStore();
+
+  useEffect(() => {
+    if (!hasFetched.current) {
+      syncRecentRetailCode();
+      hasFetched.current = true;
+    }
+  }, []);
+
+  const syncRecentRetailCode = async () => {
+    try {
+      const response = await fetchLatestRetailCode();
+
+      let nextRetailCode = "";
+
+      if (response) {
+        const prevRetailCode = response.data;
+        const lastNumber = parseInt(prevRetailCode.slice(2));
+        const nextNumber = lastNumber + 1;
+        nextRetailCode = `DI${nextNumber.toString().padStart(5, "0")}`;
+      }
+
+      setRetailCode(nextRetailCode);
+      toast.info(response.message);
+    } catch (error: any) {
+      const nextRetailCode = "DI00001";
+      setRetailCode(nextRetailCode);
+      toast.info(error.message);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,31 +72,56 @@ const AddStorePage = () => {
         return toast.warning("Please key in all field!");
       }
 
-      const objClient = {
-        retailCode,
-        shopName,
-        registeredCompanyName,
-        companyRegistrationNumber,
-        shopAddress1,
-        shopAddress2,
-        state,
-        district,
-        postcode,
-        city,
-        googleMapLink,
-        shopPhoneNumber,
-        shopEmail,
-        businessCategory,
-        licenseType,
-        companySSM,
-        businessLicense,
-        agreement,
-        status,
-        businessImage,
-        product,
-      };
+      const formData = new FormData();
 
-      const response = await newStore(objClient);
+      formData.append("retailCode", retailCode);
+      formData.append("shopName", shopName);
+      formData.append("registeredCompanyName", registeredCompanyName);
+      formData.append("companyRegistrationNumber", companyRegistrationNumber);
+      formData.append("shopAddress1", shopAddress1);
+      formData.append("shopAddress2", shopAddress2);
+      formData.append("state", state);
+      formData.append("district", district);
+      formData.append("postcode", postcode);
+      formData.append("city", city);
+      formData.append("googleMapLink", googleMapLink);
+      formData.append("shopPhoneNumber", shopPhoneNumber);
+      formData.append("shopEmail", shopEmail);
+      formData.append("businessCategory", businessCategory);
+      formData.append("licenseType", licenseType);
+      formData.append("status", status);
+      formData.append("product", product);
+
+      if (companySSM) formData.append("companySSM", companySSM);
+      if (businessLicense) formData.append("businessLicense", businessLicense);
+      if (agreement) formData.append("agreement", agreement);
+      if (businessImage) formData.append("businessImage", businessImage);
+
+      // const objClient = {
+      //   retailCode,
+      //   shopName,
+      //   registeredCompanyName,
+      //   companyRegistrationNumber,
+      //   shopAddress1,
+      //   shopAddress2,
+      //   state,
+      //   district,
+      //   postcode,
+      //   city,
+      //   googleMapLink,
+      //   shopPhoneNumber,
+      //   shopEmail,
+      //   businessCategory,
+      //   licenseType,
+      //   companySSM,
+      //   businessLicense,
+      //   agreement,
+      //   status,
+      //   businessImage,
+      //   product,
+      // };
+
+      const response = await newStore(token, formData);
 
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -83,7 +140,7 @@ const AddStorePage = () => {
           placeholder="Retail Code"
           name="text"
           value={retailCode}
-          onChange={(e) => setRetailCode(e.target.value)}
+          readOnly
         />
         <input
           type="text"
