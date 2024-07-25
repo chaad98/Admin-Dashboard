@@ -1,21 +1,27 @@
 "use client";
 
 import styles from "./homepage.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { logger } from "@/utils/logger";
 import { ORIGIN_ENDPOINT } from "@/utils/api";
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
   const [data, setData] = useState<string>("Connecting to API...");
+  const hasFetched = useRef(false);
 
   useEffect(() => {
-    const interval = setInterval(fetchData, 10000); // Fetch data every 10 seconds. No need for revalidation
+    if (!hasFetched.current) {
+      const interval = setInterval(fetchData, 10000); // Fetch data every 10 seconds. No need for revalidation
 
-    fetchData();
+      hasFetched.current = true;
 
-    return () => clearInterval(interval);
-  }, [data]);
+      return () => {
+        hasFetched.current = false;
+        clearInterval(interval);
+      };
+    }
+  }, []);
 
   const fetchData = async () => {
     try {
