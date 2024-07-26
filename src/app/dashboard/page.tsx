@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Card from "../ui/dashboard/card/card";
+import CardUser from "../ui/dashboard/card/cardUser";
+import CardStore from "../ui/dashboard/card/cardStore";
+import CardProduct from "../ui/dashboard/card/cardProduct";
 import Chart from "../ui/dashboard/chart/chart";
 import styles from "../ui/dashboard/dashboard.module.css";
 import Rightbar from "../ui/dashboard/rightbar/rightbar";
@@ -24,9 +26,9 @@ const DashboardPage = () => {
     <div className={styles.wrapper}>
       <div className={styles.main}>
         <div className={styles.card}>
-          <Card />
-          <Card />
-          <Card />
+          <CardUser />
+          <CardStore />
+          <CardProduct />
         </div>
         <Transaction />
         <Chart />
