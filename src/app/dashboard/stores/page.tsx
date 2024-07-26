@@ -69,10 +69,10 @@ const StoresPage = ({ searchParams }: any) => {
       <table className={styles.table}>
         <thead>
           <tr>
-            <td>Name</td>
-            <td>Email</td>
+            <td>Shop Name</td>
+            <td>Retail Code</td>
             <td>Created at</td>
-            <td>Role</td>
+            <td>Mobile Number</td>
             <td>Status</td>
             <td>Action</td>
           </tr>
