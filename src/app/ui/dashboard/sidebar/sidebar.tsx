@@ -37,12 +37,22 @@ const menuItems = [
         icon: <MdSupervisedUserCircle />,
       },
       {
+        title: "Stores",
+        path: "/dashboard/stores",
+        icon: <MdOutlineStorefront />,
+      },
+      {
         title: "Products",
         path: "/dashboard/products",
         icon: <MdShoppingBag />,
       },
       {
-        title: "Stores",
+        title: "State",
+        path: "/dashboard/stores",
+        icon: <MdOutlineStorefront />,
+      },
+      {
+        title: "District",
         path: "/dashboard/stores",
         icon: <MdOutlineStorefront />,
       },
