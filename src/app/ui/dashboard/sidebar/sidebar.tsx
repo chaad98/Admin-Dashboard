@@ -12,6 +12,8 @@ import {
   MdSupervisedUserCircle,
   MdWork,
   MdOutlineStorefront,
+  MdOutlineMyLocation,
+  MdShareLocation,
 } from "react-icons/md";
 import styles from "./sidebar.module.css";
 import MenuLink from "./menuLink/menuLink";
@@ -48,13 +50,13 @@ const menuItems = [
       },
       {
         title: "State",
-        path: "/dashboard/stores",
-        icon: <MdOutlineStorefront />,
+        path: "/dashboard/states",
+        icon: <MdOutlineMyLocation />,
       },
       {
         title: "District",
-        path: "/dashboard/stores",
-        icon: <MdOutlineStorefront />,
+        path: "/dashboard/districts",
+        icon: <MdShareLocation />,
       },
       {
         title: "Transactions",
