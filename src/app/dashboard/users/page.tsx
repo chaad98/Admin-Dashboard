@@ -17,28 +17,15 @@ const UsersPage = ({ searchParams }: any) => {
   const [staffs, setStaffs] = useState([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const hasFetched = useRef(false);
+  const hasFetched = useRef({ q: "", page: "" });
   const router = useRouter();
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
   useEffect(() => {
-    if (!hasFetched.current) {
-      if (!q && page) {
-        logger("q is not here:", q);
-        fetchStaff();
-        hasFetched.current = true;
-        logger("hasFetched value:", hasFetched);
-      }
-    }
-  }, [q, page]);
-
-  useEffect(() => {
-    if (q && page) {
-      console.log("q and page is here");
+    if (hasFetched.current.q !== q || hasFetched.current.page !== page) {
       fetchStaff();
-      hasFetched.current = false;
-      console.log("hasFetched value:", hasFetched);
+      hasFetched.current = { q, page };
     }
   }, [q, page]);
 

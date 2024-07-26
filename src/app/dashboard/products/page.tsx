@@ -16,14 +16,14 @@ const ProductsPage = ({ searchParams }: any) => {
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const hasFetched = useRef(false);
+  const hasFetched = useRef({ q: "", page: "" });
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
 
   useEffect(() => {
-    if (!hasFetched.current) {
+    if (hasFetched.current.q !== q || hasFetched.current.page !== page) {
       fetchProducts();
-      hasFetched.current = true;
+      hasFetched.current = { q, page };
     }
   }, [q, page]);
 
