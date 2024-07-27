@@ -82,6 +82,78 @@ export const newStore = async (token: any, formData: FormData) => {
   }
 };
 
+export const newProduct = async (token: any, formData: FormData) => {
+  try {
+    const responseNewProduct = await axios.post(
+      `${ADMIN_ENDPOINT}/new-product`,
+      formData,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (responseNewProduct) {
+      logger("New product added:", responseNewProduct);
+    }
+
+    return responseNewProduct;
+  } catch (error: any) {
+    logger("Error creating product in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
+export const newState = async (token: any, formData: FormData) => {
+  try {
+    const responseNewState = await axios.post(
+      `${ADMIN_ENDPOINT}/new-state`,
+      formData,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (responseNewState) {
+      logger("New state added:", responseNewState);
+    }
+
+    return responseNewState;
+  } catch (error: any) {
+    logger("Error creating state in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
+export const newDistrict = async (token: any, formData: FormData) => {
+  try {
+    const responseNewDistrict = await axios.post(
+      `${ADMIN_ENDPOINT}/new-district`,
+      formData,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (responseNewDistrict) {
+      logger("New district added:", responseNewDistrict);
+    }
+
+    return responseNewDistrict;
+  } catch (error: any) {
+    logger("Error creating district in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const fetchLatestRetailCode = async () => {
   try {
     const responseRetailCode = await axios.get(`${ADMIN_ENDPOINT}/retail-code`);
