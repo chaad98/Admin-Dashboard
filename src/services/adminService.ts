@@ -249,11 +249,8 @@ export const deleteUser = async (userId: any) => {
 
 export const deleteProduct = async (productId: any) => {
   try {
-    const responseDeletedProduct = await axios.post(
-      `${ADMIN_ENDPOINT}/delete-products`,
-      {
-        productId,
-      }
+    const responseDeletedProduct = await axios.delete(
+      `${ADMIN_ENDPOINT}/delete-products/${productId}`
     );
 
     if (!responseDeletedProduct) {
@@ -269,11 +266,8 @@ export const deleteProduct = async (productId: any) => {
 
 export const deleteStores = async (storesId: any) => {
   try {
-    const responseDeletedStores = await axios.post(
-      `${ADMIN_ENDPOINT}/delete-stores`,
-      {
-        storesId,
-      }
+    const responseDeletedStores = await axios.delete(
+      `${ADMIN_ENDPOINT}/delete-stores/${storesId}`
     );
 
     if (!responseDeletedStores) {
