@@ -193,13 +193,47 @@ export const existingStore = async (q: any, page: any) => {
   }
 };
 
+export const existingState = async (q: any, page: any) => {
+  try {
+    const responseState = await axios.get(`${ADMIN_ENDPOINT}/list-states`, {
+      params: { q, page },
+    });
+
+    if (!responseState) {
+      logger("No existing state:", responseState);
+    }
+
+    return responseState.data;
+  } catch (error: any) {
+    logger("Error fetching state in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
+export const existingDistrict = async (q: any, page: any) => {
+  try {
+    const responseDistrict = await axios.get(
+      `${ADMIN_ENDPOINT}/list-districts`,
+      {
+        params: { q, page },
+      }
+    );
+
+    if (!responseDistrict) {
+      logger("No existing district:", responseDistrict);
+    }
+
+    return responseDistrict.data;
+  } catch (error: any) {
+    logger("Error fetching district in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const deleteUser = async (userId: any) => {
   try {
-    const responseDeletedUser = await axios.post(
-      `${ADMIN_ENDPOINT}/delete-users`,
-      {
-        userId,
-      }
+    const responseDeletedUser = await axios.delete(
+      `${ADMIN_ENDPOINT}/delete-users/${userId}`
     );
 
     if (responseDeletedUser) {
