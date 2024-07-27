@@ -264,10 +264,10 @@ export const deleteProduct = async (productId: any) => {
   }
 };
 
-export const deleteStores = async (storesId: any) => {
+export const deleteStores = async (storeId: any) => {
   try {
     const responseDeletedStores = await axios.delete(
-      `${ADMIN_ENDPOINT}/delete-stores/${storesId}`
+      `${ADMIN_ENDPOINT}/delete-stores/${storeId}`
     );
 
     if (!responseDeletedStores) {
@@ -277,6 +277,44 @@ export const deleteStores = async (storesId: any) => {
     return responseDeletedStores.data.data;
   } catch (error: any) {
     logger("Error deleting product in database:", error);
+    throw Error(
+      error.response.data.error || error.response.data.message || error.message
+    );
+  }
+};
+
+export const deleteStates = async (stateId: any) => {
+  try {
+    const responseDeletedStates = await axios.delete(
+      `${ADMIN_ENDPOINT}/delete-states/${stateId}`
+    );
+
+    if (!responseDeletedStates) {
+      logger("No existing states:", responseDeletedStates);
+    }
+
+    return responseDeletedStates.data.data;
+  } catch (error: any) {
+    logger("Error deleting state in database:", error);
+    throw Error(
+      error.response.data.error || error.response.data.message || error.message
+    );
+  }
+};
+
+export const deleteDistricts = async (districtId: any) => {
+  try {
+    const responseDeletedDistricts = await axios.delete(
+      `${ADMIN_ENDPOINT}/delete-district/${districtId}`
+    );
+
+    if (!responseDeletedDistricts) {
+      logger("No existing district:", responseDeletedDistricts);
+    }
+
+    return responseDeletedDistricts.data.data;
+  } catch (error: any) {
+    logger("Error deleting district in database:", error);
     throw Error(
       error.response.data.error || error.response.data.message || error.message
     );
