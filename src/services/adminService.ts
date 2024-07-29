@@ -237,11 +237,15 @@ export const updateStaffInfo = async (token: any, objData: any) => {
   }
 };
 
-export const updateStatefInfo = async (token: any, objData: any) => {
+export const updateStatefInfo = async (
+  token: any,
+  stateId: any,
+  formData: FormData
+) => {
   try {
     const responseUpdateStaff = await axios.put(
-      `${ADMIN_ENDPOINT}/update-state`,
-      objData,
+      `${ADMIN_ENDPOINT}/update-state/${stateId}`,
+      formData,
       {
         // headers: {
         //   Authorization: `Bearer ${token}`,
@@ -255,7 +259,7 @@ export const updateStatefInfo = async (token: any, objData: any) => {
 
     return responseUpdateStaff;
   } catch (error: any) {
-    logger("Error updating runner/staff in database:", error);
+    logger("Error updating state in database:", error);
     throw Error(error.response.data.error || error.response.data.message);
   }
 };
