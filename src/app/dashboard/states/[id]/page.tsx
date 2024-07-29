@@ -2,16 +2,23 @@
 
 import Loading from "@/app/ui/dashboard/loading/loading";
 import styles from "@/app/ui/dashboard/state/singleState/singleState.module.css";
-import { updateStaffInfo, viewStaffInfo } from "@/services/adminService";
+import {
+  updateStaffInfo,
+  updateStatefInfo,
+  viewStaffInfo,
+  viewStateInfo,
+} from "@/services/adminService";
 import useAuthStore from "@/store/useAuthStore";
 import { logger } from "@/utils/logger";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 
 const SingleStatePage = () => {
   const [state, setState] = useState<any>(null);
+  const [stateImage, setStateImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useAuthStore();
   const { id }: any = useParams();
@@ -20,7 +27,7 @@ const SingleStatePage = () => {
 
   useEffect(() => {
     if (!hasFetched.current) {
-      singleStaff(token, id);
+      singleState(token, id);
       hasFetched.current = true;
     }
   }, [token, id]);
@@ -33,8 +40,7 @@ const SingleStatePage = () => {
     const { name, value } = e.target;
     setState((prevState: any) => ({
       ...prevState,
-      [name]:
-        name === "isAdmin" || name === "isActive" ? value === "true" : value,
+      [name]: value,
     }));
   };
 
@@ -42,27 +48,34 @@ const SingleStatePage = () => {
     e.preventDefault();
 
     try {
-      if (state.title == null) {
+      if (!state.title) {
         toast.warning("Please make sure state name is not empty");
         return;
       }
 
-      const response = await updateStaffInfo(token, state);
+      const formData = new FormData();
+      formData.append("title", state.title);
+
+      if (stateImage) {
+        formData.append("stateImage", stateImage);
+      }
+
+      const response = await updateStatefInfo(token, formData);
 
       if (response.status === 200) {
         toast.success(response.data.message);
-        router.push("/dashboard/users");
+        router.push("/dashboard/states");
       }
     } catch (error: any) {
       toast.error(error.message);
     }
   };
 
-  const singleStaff = async (token: any, userId: any) => {
+  const singleState = async (token: any, stateId: any) => {
     try {
       setIsLoading(true);
-      const response = await viewStaffInfo(token, userId);
-      logger("Staff data:", response.data);
+      const response = await viewStateInfo(token, stateId);
+      logger("State data:", response.data);
       setState(response.data);
     } catch (error: any) {
       toast.error(error.message);
@@ -75,17 +88,21 @@ const SingleStatePage = () => {
     return <Loading />;
   }
 
-  if (!user) {
-    return <div className={styles.noUserContainer}>No user found</div>;
+  if (!state) {
+    return <div className={styles.noUserContainer}>No state found</div>;
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
         <div className={styles.imgContainer}>
-          <Image src={user.profilePicture || "/noavatar.png"} alt="" fill />
+          <Image
+            src={state ? state.image : "/noavatar.png"}
+            alt="State Image"
+            fill
+          />
         </div>
-        Odar DaaS
+        {state.title}
       </div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -94,63 +111,55 @@ const SingleStatePage = () => {
             type="text"
             name="name"
             placeholder="Your name..."
-            value={user.name}
+            value={state.title}
             onChange={handleChange}
           />
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Your email..."
-            value={user.email}
-            onChange={handleChange}
+          <FileUpload
+            label="State image"
+            file={stateImage}
+            setFile={setStateImage}
           />
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Your password..."
-            onChange={handleChange}
-            required
-          />
-          <label>Phone</label>
-          <input
-            type="text"
-            name="mobile"
-            placeholder="Your phone number (+60123456789)..."
-            value={user.mobile}
-            onChange={handleChange}
-          />
-          <label>Address</label>
-          <textarea
-            name="address"
-            id="address"
-            placeholder="Your address (Kuala Lumpur)..."
-            value={user.address}
-            onChange={handleChange}
-          />
-          <label>Is Admin?</label>
-          <select
-            name="isAdmin"
-            id="isAdmin"
-            value={user.isAdmin ? "true" : "false"}
-            onChange={handleChange}
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-          <label>Is Active?</label>
-          <select
-            name="isActive"
-            id="isActive"
-            value={user.isActive ? "true" : "false"}
-            onChange={handleChange}
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
           <button className={styles.btnUpdate}>Submit</button>
         </form>
+      </div>
+    </div>
+  );
+};
+
+const FileUpload = ({
+  label,
+  file,
+  setFile,
+}: {
+  label: string;
+  file: File | null;
+  setFile: (file: File) => void;
+}) => {
+  const handleDrop = (acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+    }
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: { "image/*": [] },
+    onDrop: handleDrop,
+  });
+
+  return (
+    <div className={styles.fileUpload}>
+      <label>{label}</label>
+      <div {...getRootProps({ className: styles.dropzone })}>
+        <input {...getInputProps()} />
+        {file ? (
+          <img
+            src={URL.createObjectURL(file)}
+            alt={label}
+            className={styles.previewImage}
+          />
+        ) : (
+          <p>Drag & drop an image, or click to select one</p>
+        )}
       </div>
     </div>
   );
