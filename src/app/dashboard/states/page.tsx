@@ -93,13 +93,13 @@ const StatesPage = ({ searchParams }: any) => {
                     height={40}
                     className={styles.userImage}
                   />
-                  {state.name}
+                  {state.title}
                 </td>
                 <td>{state.total}</td>
                 <td>{formattedDate(state.createdAt)}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/users/${state._id}`}>
+                    <Link href={`/dashboard/states/${state._id}`}>
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>
