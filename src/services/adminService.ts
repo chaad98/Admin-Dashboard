@@ -191,6 +191,29 @@ export const viewStaffInfo = async (token: any, userId: any) => {
   }
 };
 
+export const viewStateInfo = async (token: any, stateId: any) => {
+  try {
+    const responseViewState = await axios.get(
+      `${ADMIN_ENDPOINT}/single-state`,
+      {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
+        params: { stateId },
+      }
+    );
+
+    if (responseViewState) {
+      logger("State info:", responseViewState);
+    }
+
+    return responseViewState.data;
+  } catch (error: any) {
+    logger("Error viewing state in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const updateStaffInfo = async (token: any, objData: any) => {
   try {
     const responseUpdateStaff = await axios.put(
@@ -200,6 +223,29 @@ export const updateStaffInfo = async (token: any, objData: any) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      }
+    );
+
+    if (responseUpdateStaff) {
+      logger("Updated user data:", responseUpdateStaff);
+    }
+
+    return responseUpdateStaff;
+  } catch (error: any) {
+    logger("Error updating runner/staff in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
+export const updateStatefInfo = async (token: any, objData: any) => {
+  try {
+    const responseUpdateStaff = await axios.put(
+      `${ADMIN_ENDPOINT}/update-state`,
+      objData,
+      {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       }
     );
 
@@ -365,7 +411,7 @@ export const deleteStates = async (stateId: any) => {
       logger("No existing states:", responseDeletedStates);
     }
 
-    return responseDeletedStates.data.data;
+    return responseDeletedStates.data;
   } catch (error: any) {
     logger("Error deleting state in database:", error);
     throw Error(
