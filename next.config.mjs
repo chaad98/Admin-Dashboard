@@ -1,20 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "media.wired.com",
-      },
-      {
-        protocol: "https",
-        hostname: "encrypted-tbn0.gstatic.com",
-      },
-      {
-        protocol: "https",
-        hostname: "media.wired.com",
-      },
-    ],
+    domains: ["mvig-daas.s3.ap-southeast-1.amazonaws.com"],
   },
 };
 
