@@ -26,6 +26,10 @@ const AddStatePage = () => {
 
       formData.append("name", name);
 
+      if (stateImage) {
+        formData.append("stateImage", stateImage);
+      }
+
       const response = await newState(token, formData);
 
       if (response.status === 200) {
