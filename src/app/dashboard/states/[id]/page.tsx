@@ -60,7 +60,7 @@ const SingleStatePage = () => {
         formData.append("stateImage", stateImage);
       }
 
-      const response = await updateStatefInfo(token, formData);
+      const response = await updateStatefInfo(token, id, formData);
 
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -109,8 +109,8 @@ const SingleStatePage = () => {
           <label>Name</label>
           <input
             type="text"
-            name="name"
-            placeholder="Your name..."
+            name="title"
+            placeholder="Your state..."
             value={state.title}
             onChange={handleChange}
           />
