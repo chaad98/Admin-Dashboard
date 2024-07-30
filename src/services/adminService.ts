@@ -40,11 +40,11 @@ export const logoutUser = async (token: any) => {
   }
 };
 
-export const newStaff = async (objData: any) => {
+export const newStaff = async (formData: FormData) => {
   try {
     const responseNewStaff = await axios.post(
       `${ADMIN_ENDPOINT}/new-user`,
-      objData
+      formData
     );
 
     if (responseNewStaff) {
@@ -214,15 +214,19 @@ export const viewStateInfo = async (token: any, stateId: any) => {
   }
 };
 
-export const updateStaffInfo = async (token: any, objData: any) => {
+export const updateStaffInfo = async (
+  token: any,
+  userId: any,
+  formData: FormData
+) => {
   try {
     const responseUpdateStaff = await axios.put(
-      `${ADMIN_ENDPOINT}/update-user`,
-      objData,
+      `${ADMIN_ENDPOINT}/update-user/${userId}`,
+      formData,
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       }
     );
 
