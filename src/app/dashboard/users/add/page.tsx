@@ -4,6 +4,7 @@ import styles from "@/app/ui/dashboard/user/addUser/addUser.module.css";
 import { newStaff } from "@/services/adminService";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 
 const AddUserPage = () => {
@@ -14,6 +15,7 @@ const AddUserPage = () => {
   const [isAdmin, setIsAdmin] = useState("");
   const [isActive, setIsActive] = useState("");
   const [address, setAddress] = useState("");
+  const [userImage, setUserImage] = useState<File | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,17 +28,20 @@ const AddUserPage = () => {
         );
       }
 
-      const objClient = {
-        name,
-        email,
-        mobile,
-        address,
-        password,
-        isAdmin,
-        isActive,
-      };
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("mobile", mobile);
+      formData.append("isAdmin", isAdmin);
+      formData.append("isActive", isActive);
+      formData.append("address", address);
 
-      const response = await newStaff(objClient);
+      if (userImage) {
+        formData.append("userImage", userImage);
+      }
+
+      const response = await newStaff(formData);
 
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -110,8 +115,52 @@ const AddUserPage = () => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         ></textarea>
+        <FileUpload
+          label="User's Image"
+          file={userImage}
+          setFile={setUserImage}
+        />
         <button type="submit">Submit</button>
       </form>
+    </div>
+  );
+};
+
+const FileUpload = ({
+  label,
+  file,
+  setFile,
+}: {
+  label: string;
+  file: File | null;
+  setFile: (file: File) => void;
+}) => {
+  const handleDrop = (acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+    }
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: { "image/*": [] },
+    onDrop: handleDrop,
+  });
+
+  return (
+    <div className={styles.fileUpload}>
+      <label>{label}</label>
+      <div {...getRootProps({ className: styles.dropzone })}>
+        <input {...getInputProps()} />
+        {file ? (
+          <img
+            src={URL.createObjectURL(file)}
+            alt={label}
+            className={styles.previewImage}
+          />
+        ) : (
+          <p>Drag & drop an image, or click to select one</p>
+        )}
+      </div>
     </div>
   );
 };
