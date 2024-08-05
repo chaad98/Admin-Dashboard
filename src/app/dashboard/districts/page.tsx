@@ -5,7 +5,7 @@ import Search from "@/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/district/district.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { deleteDistricts, existingDistrict } from "@/services/adminService";
+import { deleteDistricts, existingDistrict } from "@/services/districtService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
 import { useEffect, useRef, useState } from "react";

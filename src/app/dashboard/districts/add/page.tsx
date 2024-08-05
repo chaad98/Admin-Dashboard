@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/app/ui/dashboard/district/addDistrict/addDistrict.module.css";
-import { newDistrict } from "@/services/adminService";
+import { newDistrict } from "@/services/districtService";
 import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";

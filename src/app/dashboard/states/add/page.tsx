@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/app/ui/dashboard/state/addState/addState.module.css";
-import { newState } from "@/services/adminService";
+import { newState } from "@/services/stateService";
 import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";

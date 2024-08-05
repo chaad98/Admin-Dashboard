@@ -5,7 +5,7 @@ import Search from "@/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/product/product.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { deleteProduct, existingProduct } from "@/services/adminService";
+import { deleteProduct, existingProduct } from "@/services/productService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
 import { useEffect, useRef, useState } from "react";

@@ -2,7 +2,7 @@
 
 import Loading from "@/app/ui/dashboard/loading/loading";
 import styles from "@/app/ui/dashboard/user/singleUser/singleUser.module.css";
-import { updateStaffInfo, viewStaffInfo } from "@/services/adminService";
+import { updateStaffInfo, viewStaffInfo } from "@/services/staffService";
 import useAuthStore from "@/store/useAuthStore";
 import { logger } from "@/utils/logger";
 import Image from "next/image";

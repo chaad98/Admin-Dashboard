@@ -2,7 +2,7 @@
 
 import Loading from "@/app/ui/dashboard/loading/loading";
 import styles from "@/app/ui/dashboard/district/singleDistrict/singleDistrict.module.css";
-import { updateStaffInfo, viewStaffInfo } from "@/services/adminService";
+import { updateStaffInfo, viewStaffInfo } from "@/services/staffService";
 import useAuthStore from "@/store/useAuthStore";
 import { logger } from "@/utils/logger";
 import Image from "next/image";
@@ -49,12 +49,12 @@ const SingleDistrictPage = () => {
         return;
       }
 
-      const response = await updateStaffInfo(token, user);
+      // const response = await updateStaffInfo(token, user);
 
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        router.push("/dashboard/users");
-      }
+      // if (response.status === 200) {
+      //   toast.success(response.data.message);
+      //   router.push("/dashboard/users");
+      // }
     } catch (error: any) {
       toast.error(error.message);
     }

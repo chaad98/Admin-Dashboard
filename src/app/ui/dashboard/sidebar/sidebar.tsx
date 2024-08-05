@@ -18,7 +18,7 @@ import {
 import styles from "./sidebar.module.css";
 import MenuLink from "./menuLink/menuLink";
 import Image from "next/image";
-import { logoutUser } from "@/services/adminService";
+import { logoutUser } from "@/services/staffService";
 import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/store/useAuthStore";

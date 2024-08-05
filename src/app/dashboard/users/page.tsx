@@ -5,7 +5,7 @@ import Search from "@/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/user/user.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { deleteUser, existingStaff } from "@/services/adminService";
+import { deleteUser, existingStaff } from "@/services/staffService";
 import { logger } from "@/utils/logger";
 import { formattedDate } from "@/utils/date";
 import { useEffect, useRef, useState } from "react";

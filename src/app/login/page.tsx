@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/app/ui/login/login.module.css";
-import { loginUser } from "@/services/adminService";
+import { loginUser } from "@/services/staffService";
 import useAuthStore from "@/store/useAuthStore";
 import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";

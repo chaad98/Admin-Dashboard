@@ -4,7 +4,7 @@ import Loading from "@/app/ui/dashboard/loading/loading";
 import Pagination from "@/app/ui/dashboard/pagination/pagination";
 import Search from "@/app/ui/dashboard/search/search";
 import styles from "@/app/ui/dashboard/stores/store.module.css";
-import { deleteStores, existingStore } from "@/services/adminService";
+import { deleteStores, existingStore } from "@/services/storeService";
 import { formattedDate } from "@/utils/date";
 import { logger } from "@/utils/logger";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/app/ui/dashboard/user/addUser/addUser.module.css";
-import { newStaff } from "@/services/adminService";
+import { newStaff } from "@/services/staffService";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";

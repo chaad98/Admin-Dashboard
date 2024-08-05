@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/app/ui/dashboard/stores/addStore/addStore.module.css";
-import { fetchLatestRetailCode, newStore } from "@/services/adminService";
+import { fetchLatestRetailCode, newStore } from "@/services/storeService";
 import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
