@@ -92,7 +92,7 @@ const SingleStatePage = () => {
       <div className={styles.infoContainer}>
         <div className={styles.imgContainer}>
           <Image
-            src={state ? state.image : "/noavatar.png"}
+            src={state.image ? state.image : "/noavatar.png"}
             alt="State Image"
             fill
           />
