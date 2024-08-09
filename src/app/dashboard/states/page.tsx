@@ -87,7 +87,7 @@ const StatesPage = ({ searchParams }: any) => {
               <tr key={state._id}>
                 <td className={styles.user}>
                   <Image
-                    src={state.image || "/noflag.png"}
+                    src={state.image ? state.image : "/noflag.png"}
                     alt=""
                     width={40}
                     height={40}
@@ -95,7 +95,7 @@ const StatesPage = ({ searchParams }: any) => {
                   />
                   {state.title}
                 </td>
-                <td>{state.total}</td>
+                <td>{state.districts ? state.districts.length : 0}</td>
                 <td>{formattedDate(state.createdAt)}</td>
                 <td>
                   <div className={styles.buttons}>
