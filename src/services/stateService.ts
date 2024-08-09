@@ -2,6 +2,23 @@ import axios from "axios";
 import { ADMIN_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
+export const getArrayState = async (token: any) => {
+  try {
+    const responseArrayState = await axios.get(
+      `${ADMIN_ENDPOINT}/dropdown-states`,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`
+        },
+      }
+    );
+    return responseArrayState.data;
+  } catch (error: any) {
+    logger("Error rendering state in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const newState = async (token: any, formData: FormData) => {
   try {
     const responseNewState = await axios.post(
