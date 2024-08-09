@@ -49,16 +49,6 @@ const menuItems = [
         icon: <MdShoppingBag />,
       },
       {
-        title: "State",
-        path: "/dashboard/states",
-        icon: <MdOutlineMyLocation />,
-      },
-      {
-        title: "District",
-        path: "/dashboard/districts",
-        icon: <MdShareLocation />,
-      },
-      {
         title: "Transactions",
         path: "/dashboard/transactions",
         icon: <MdAttachMoney />,
@@ -90,6 +80,26 @@ const menuItems = [
     list: [
       {
         title: "Settings",
+        path: "/dashboard/settings",
+        icon: <MdOutlineSettings />,
+      },
+      {
+        title: "State",
+        path: "/dashboard/states",
+        icon: <MdOutlineMyLocation />,
+      },
+      {
+        title: "District",
+        path: "/dashboard/districts",
+        icon: <MdShareLocation />,
+      },
+      {
+        title: "Business Category",
+        path: "/dashboard/settings",
+        icon: <MdOutlineSettings />,
+      },
+      {
+        title: "License Type",
         path: "/dashboard/settings",
         icon: <MdOutlineSettings />,
       },
