@@ -4,7 +4,6 @@ import styles from "@/app/ui/dashboard/district/addDistrict/addDistrict.module.c
 import { newDistrict } from "@/services/districtService";
 import { getArrayState } from "@/services/stateService";
 import useAuthStore from "@/store/useAuthStore";
-import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -39,12 +38,6 @@ const AddDistrictPage = () => {
     e.preventDefault();
 
     try {
-      // if (!name || !states) {
-      //   return toast.warning(
-      //     "Please enter district name and select state accordingly"
-      //   );
-      // }
-
       const formData = new FormData();
 
       formData.append("name", name);
