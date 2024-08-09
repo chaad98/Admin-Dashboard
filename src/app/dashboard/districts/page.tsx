@@ -89,15 +89,15 @@ const DistrictsPage = ({ searchParams }: any) => {
               <tr key={district._id}>
                 <td className={styles.user}>
                   <Image
-                    src={district.image || "/nodistrict.png"}
+                    src={district.image ? district.image : "/nodistrict.png"}
                     alt=""
                     width={40}
                     height={40}
                     className={styles.userImage}
                   />
-                  {district.name}
+                  {district.title}
                 </td>
-                <td>{district.email}</td>
+                <td>{district.stateName}</td>
                 <td>{formattedDate(district.createdAt)}</td>
                 <td>
                   <div className={styles.buttons}>
