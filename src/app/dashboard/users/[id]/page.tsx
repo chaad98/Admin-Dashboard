@@ -54,7 +54,11 @@ const SingleUserPage = () => {
       const formData = new FormData();
       formData.append("name", user.name);
       formData.append("email", user.email);
-      formData.append("password", user.password);
+
+      if (user.password) {
+        formData.append("password", user.password);
+      }
+
       formData.append("mobile", user.mobile);
       formData.append("isAdmin", user.isAdmin);
       formData.append("isActive", user.isActive);
@@ -126,9 +130,8 @@ const SingleUserPage = () => {
           <input
             type="password"
             name="password"
-            placeholder="Your password..."
+            placeholder="Leave empty if you want to use your old password..."
             onChange={handleChange}
-            required
           />
           <label>Phone</label>
           <input
