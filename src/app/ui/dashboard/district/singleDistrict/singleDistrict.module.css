@@ -72,3 +72,35 @@
 .form button:hover {
   background-color: rgb(3, 169, 169);
 }
+
+.fileUpload {
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.fileUpload label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.dropzone {
+  padding: 30px;
+  border: 2px dashed #2e374a;
+  border-radius: 5px;
+  background-color: var(--bg);
+  text-align: center;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.dropzone:hover {
+  background-color: var(--bgSoft);
+}
+
+.previewImage {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  margin-top: 20px;
+}
