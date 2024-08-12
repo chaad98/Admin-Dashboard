@@ -101,7 +101,7 @@ const DistrictsPage = ({ searchParams }: any) => {
                 <td>{formattedDate(district.createdAt)}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/users/${district._id}`}>
+                    <Link href={`/dashboard/districts/${district._id}`}>
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>
