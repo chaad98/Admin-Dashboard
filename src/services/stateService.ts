@@ -89,7 +89,7 @@ export const updateStatefInfo = async (
   formData: FormData
 ) => {
   try {
-    const responseUpdateStaff = await axios.put(
+    const responseUpdateState = await axios.put(
       `${ADMIN_ENDPOINT}/update-state/${stateId}`,
       formData,
       {
@@ -99,11 +99,11 @@ export const updateStatefInfo = async (
       }
     );
 
-    if (responseUpdateStaff) {
-      logger("Updated user data:", responseUpdateStaff);
+    if (responseUpdateState) {
+      logger("Updated user data:", responseUpdateState);
     }
 
-    return responseUpdateStaff;
+    return responseUpdateState;
   } catch (error: any) {
     logger("Error updating state in database:", error);
     throw Error(error.response.data.error || error.response.data.message);
