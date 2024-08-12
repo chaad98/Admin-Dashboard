@@ -102,7 +102,7 @@ const SingleUserPage = () => {
         <div className={styles.imgContainer}>
           <Image src={user.profilePicture || "/noavatar.png"} alt="" fill />
         </div>
-        Odar DaaS
+        {user.name}
       </div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit} className={styles.form}>
