@@ -2,8 +2,8 @@
 
 import styles from "@/app/ui/dashboard/district/addDistrict/addDistrict.module.css";
 import { newDistrict } from "@/services/districtService";
-import { getArrayState } from "@/services/stateService";
 import useAuthStore from "@/store/useAuthStore";
+import { arrayState } from "@/utils/reuse";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -20,19 +20,10 @@ const AddDistrictPage = () => {
 
   useEffect(() => {
     if (!hasFetched.current) {
-      arrayStates(token);
+      arrayState(token, setStates);
       hasFetched.current = true;
     }
   }, []);
-
-  const arrayStates = async (token: any) => {
-    try {
-      const states = await getArrayState(token);
-      setStates(states.data);
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,7 +76,7 @@ const AddDistrictPage = () => {
           ))}
         </select>
         <FileUpload
-          label="State image"
+          label="District image"
           file={districtImage}
           setFile={setDistrictImage}
         />
