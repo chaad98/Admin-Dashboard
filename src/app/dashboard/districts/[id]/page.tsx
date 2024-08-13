@@ -2,16 +2,24 @@
 
 import Loading from "@/app/ui/dashboard/loading/loading";
 import styles from "@/app/ui/dashboard/district/singleDistrict/singleDistrict.module.css";
-import { updateStaffInfo, viewStaffInfo } from "@/services/staffService";
+import {
+  updateDistrictInfo,
+  viewDistrictInfo,
+} from "@/services/districtService";
 import useAuthStore from "@/store/useAuthStore";
 import { logger } from "@/utils/logger";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { useDropzone } from "react-dropzone";
+import { arrayState } from "@/utils/reuse";
 
 const SingleDistrictPage = () => {
-  const [user, setUser] = useState<any>(null);
+  const [districts, setDistricts] = useState<any>(null);
+  const [districtImage, setDistrictImage] = useState<File | null>(null);
+  const [selectedState, setSelectedState] = useState("");
+  const [states, setStates] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useAuthStore();
   const { id }: any = useParams();
@@ -20,7 +28,7 @@ const SingleDistrictPage = () => {
 
   useEffect(() => {
     if (!hasFetched.current) {
-      singleStaff(token, id);
+      singleDistrict(token, id);
       hasFetched.current = true;
     }
   }, [token, id]);
@@ -31,44 +39,48 @@ const SingleDistrictPage = () => {
     >
   ) => {
     const { name, value } = e.target;
-    setUser((prevUser: any) => ({
-      ...prevUser,
-      [name]:
-        name === "isAdmin" || name === "isActive" ? value === "true" : value,
+
+    if (name === "state") {
+      setSelectedState(value);
+    }
+
+    setDistricts((prevDistrict: any) => ({
+      ...prevDistrict,
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      if (user.isAdmin == null || user.isActive == null) {
-        toast.warning(
-          "Please make sure admin and active status field are not empty"
-        );
-        return;
-      }
+    const formData = new FormData();
 
-      // const response = await updateStaffInfo(token, user);
+    formData.append("title", districts.title);
+    formData.append("state", selectedState);
 
-      // if (response.status === 200) {
-      //   toast.success(response.data.message);
-      //   router.push("/dashboard/users");
-      // }
-    } catch (error: any) {
-      toast.error(error.message);
+    if (districtImage) {
+      formData.append("districtImage", districtImage);
+    }
+
+    const response = await updateDistrictInfo(token, id, formData);
+
+    if (response.status === 200) {
+      toast.success(response.data.message);
+      router.push("/dashboard/districts");
     }
   };
 
-  const singleStaff = async (token: any, userId: any) => {
+  const singleDistrict = async (token: any, districtId: any) => {
     try {
       setIsLoading(true);
-      const response = await viewStaffInfo(token, userId);
-      logger("Staff data:", response.data);
-      setUser(response.data);
+      const response = await viewDistrictInfo(token, districtId);
+      logger("District data:", response.data);
+      setDistricts(response.data);
+      setSelectedState(response.data.stateName);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
+      arrayState(token, setStates);
       setIsLoading(false);
     }
   };
@@ -77,82 +89,87 @@ const SingleDistrictPage = () => {
     return <Loading />;
   }
 
-  if (!user) {
-    return <div className={styles.noUserContainer}>No user found</div>;
+  if (!districts) {
+    return <div className={styles.noUserContainer}>No district found</div>;
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
         <div className={styles.imgContainer}>
-          <Image src={user.profilePicture || "/noavatar.png"} alt="" fill />
+          <Image src={districts.image || "/nodistrict.png"} alt="" fill />
         </div>
-        Odar DaaS
+        {districts.title}
       </div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit} className={styles.form}>
           <label>Name</label>
           <input
             type="text"
-            name="name"
-            placeholder="Your name..."
-            value={user.name}
+            name="title"
+            placeholder="District name..."
+            value={districts.title}
             onChange={handleChange}
           />
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Your email..."
-            value={user.email}
-            onChange={handleChange}
-          />
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Your password..."
-            onChange={handleChange}
-            required
-          />
-          <label>Phone</label>
-          <input
-            type="text"
-            name="mobile"
-            placeholder="Your phone number (+60123456789)..."
-            value={user.mobile}
-            onChange={handleChange}
-          />
-          <label>Address</label>
-          <textarea
-            name="address"
-            id="address"
-            placeholder="Your address (Kuala Lumpur)..."
-            value={user.address}
-            onChange={handleChange}
-          />
-          <label>Is Admin?</label>
+          <label>State</label>
           <select
-            name="isAdmin"
-            id="isAdmin"
-            value={user.isAdmin ? "true" : "false"}
+            name="state"
+            id="state"
+            value={selectedState}
             onChange={handleChange}
           >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
+            {states.map((state: { id: string; title: string }) => (
+              <option key={state.id} value={state.title}>
+                {state.title}
+              </option>
+            ))}
           </select>
-          <label>Is Active?</label>
-          <select
-            name="isActive"
-            id="isActive"
-            value={user.isActive ? "true" : "false"}
-            onChange={handleChange}
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
+          <FileUpload
+            label="State image"
+            file={districtImage}
+            setFile={setDistrictImage}
+          />
           <button className={styles.btnUpdate}>Submit</button>
         </form>
+      </div>
+    </div>
+  );
+};
+
+const FileUpload = ({
+  label,
+  file,
+  setFile,
+}: {
+  label: string;
+  file: File | null;
+  setFile: (file: File) => void;
+}) => {
+  const handleDrop = (acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      setFile(acceptedFiles[0]);
+    }
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: { "image/*": [] },
+    onDrop: handleDrop,
+  });
+
+  return (
+    <div className={styles.fileUpload}>
+      <label>{label}</label>
+      <div {...getRootProps({ className: styles.dropzone })}>
+        <input {...getInputProps()} />
+        {file ? (
+          <img
+            src={URL.createObjectURL(file)}
+            alt={label}
+            className={styles.previewImage}
+          />
+        ) : (
+          <p>Drag & drop an image, or click to select one</p>
+        )}
       </div>
     </div>
   );
