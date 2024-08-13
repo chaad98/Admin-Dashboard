@@ -46,6 +46,56 @@ export const existingDistrict = async (q: any, page: any) => {
   }
 };
 
+export const viewDistrictInfo = async (token: any, districtId: any) => {
+  try {
+    const responseViewDistrict = await axios.get(
+      `${ADMIN_ENDPOINT}/single-district`,
+      {
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
+        params: { districtId },
+      }
+    );
+
+    if (responseViewDistrict) {
+      logger("District info:", responseViewDistrict);
+    }
+
+    return responseViewDistrict.data;
+  } catch (error: any) {
+    logger("Error viewing district in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
+export const updateDistrictInfo = async (
+  token: any,
+  districtId: any,
+  formData: FormData
+) => {
+  try {
+    const responseUpdateDistrict = await axios.put(
+      `${ADMIN_ENDPOINT}/update-district/${districtId}`,
+      formData
+      // {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // }
+    );
+
+    if (responseUpdateDistrict) {
+      logger("District info updated:", responseUpdateDistrict);
+    }
+
+    return responseUpdateDistrict;
+  } catch (error: any) {
+    logger("Error updating district in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const deleteDistricts = async (districtId: any) => {
   try {
     const responseDeletedDistricts = await axios.delete(
