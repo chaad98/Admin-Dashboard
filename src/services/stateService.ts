@@ -1,11 +1,11 @@
 import axios from "axios";
-import { ADMIN_ENDPOINT } from "@/utils/api";
+import { ADMIN_STATES_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
 export const getArrayState = async (token: any) => {
   try {
     const responseArrayState = await axios.get(
-      `${ADMIN_ENDPOINT}/dropdown-states`,
+      `${ADMIN_STATES_ENDPOINT}/dropdown-states`,
       {
         headers: {
           // Authorization: `Bearer ${token}`
@@ -22,7 +22,7 @@ export const getArrayState = async (token: any) => {
 export const newState = async (token: any, formData: FormData) => {
   try {
     const responseNewState = await axios.post(
-      `${ADMIN_ENDPOINT}/new-state`,
+      `${ADMIN_STATES_ENDPOINT}/new-state`,
       formData,
       {
         headers: {
@@ -45,9 +45,12 @@ export const newState = async (token: any, formData: FormData) => {
 
 export const existingState = async (q: any, page: any) => {
   try {
-    const responseState = await axios.get(`${ADMIN_ENDPOINT}/list-states`, {
-      params: { q, page },
-    });
+    const responseState = await axios.get(
+      `${ADMIN_STATES_ENDPOINT}/list-states`,
+      {
+        params: { q, page },
+      }
+    );
 
     if (!responseState) {
       logger("No existing state:", responseState);
@@ -63,7 +66,7 @@ export const existingState = async (q: any, page: any) => {
 export const viewStateInfo = async (token: any, stateId: any) => {
   try {
     const responseViewState = await axios.get(
-      `${ADMIN_ENDPOINT}/single-state`,
+      `${ADMIN_STATES_ENDPOINT}/single-state`,
       {
         // headers: {
         //   Authorization: `Bearer ${token}`,
@@ -90,7 +93,7 @@ export const updateStatefInfo = async (
 ) => {
   try {
     const responseUpdateState = await axios.put(
-      `${ADMIN_ENDPOINT}/update-state/${stateId}`,
+      `${ADMIN_STATES_ENDPOINT}/update-state/${stateId}`,
       formData,
       {
         // headers: {
@@ -113,7 +116,7 @@ export const updateStatefInfo = async (
 export const deleteStates = async (stateId: any) => {
   try {
     const responseDeletedStates = await axios.delete(
-      `${ADMIN_ENDPOINT}/delete-states/${stateId}`
+      `${ADMIN_STATES_ENDPOINT}/delete-states/${stateId}`
     );
 
     if (!responseDeletedStates) {

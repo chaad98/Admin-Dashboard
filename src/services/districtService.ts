@@ -1,11 +1,11 @@
 import axios from "axios";
-import { ADMIN_ENDPOINT } from "@/utils/api";
+import { ADMIN_DISTRICTS_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
 export const newDistrict = async (token: any, formData: FormData) => {
   try {
     const responseNewDistrict = await axios.post(
-      `${ADMIN_ENDPOINT}/new-district`,
+      `${ADMIN_DISTRICTS_ENDPOINT}/new-district`,
       formData,
       {
         headers: {
@@ -29,7 +29,7 @@ export const newDistrict = async (token: any, formData: FormData) => {
 export const existingDistrict = async (q: any, page: any) => {
   try {
     const responseDistrict = await axios.get(
-      `${ADMIN_ENDPOINT}/list-districts`,
+      `${ADMIN_DISTRICTS_ENDPOINT}/list-districts`,
       {
         params: { q, page },
       }
@@ -49,7 +49,7 @@ export const existingDistrict = async (q: any, page: any) => {
 export const viewDistrictInfo = async (token: any, districtId: any) => {
   try {
     const responseViewDistrict = await axios.get(
-      `${ADMIN_ENDPOINT}/single-district`,
+      `${ADMIN_DISTRICTS_ENDPOINT}/single-district`,
       {
         // headers: {
         //   Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ export const updateDistrictInfo = async (
 ) => {
   try {
     const responseUpdateDistrict = await axios.put(
-      `${ADMIN_ENDPOINT}/update-district/${districtId}`,
+      `${ADMIN_DISTRICTS_ENDPOINT}/update-district/${districtId}`,
       formData
       // {
       //   headers: {
@@ -99,7 +99,7 @@ export const updateDistrictInfo = async (
 export const deleteDistricts = async (districtId: any) => {
   try {
     const responseDeletedDistricts = await axios.delete(
-      `${ADMIN_ENDPOINT}/delete-district/${districtId}`
+      `${ADMIN_DISTRICTS_ENDPOINT}/delete-district/${districtId}`
     );
 
     if (!responseDeletedDistricts) {

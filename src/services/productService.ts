@@ -1,11 +1,11 @@
 import axios from "axios";
-import { ADMIN_ENDPOINT } from "@/utils/api";
+import { ADMIN_PRODUCTS_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
 export const newProduct = async (token: any, formData: FormData) => {
   try {
     const responseNewProduct = await axios.post(
-      `${ADMIN_ENDPOINT}/new-product`,
+      `${ADMIN_PRODUCTS_ENDPOINT}/new-product`,
       formData,
       {
         headers: {
@@ -28,9 +28,12 @@ export const newProduct = async (token: any, formData: FormData) => {
 
 export const existingProduct = async (q: any, page: any) => {
   try {
-    const responseProduct = await axios.get(`${ADMIN_ENDPOINT}/list-products`, {
-      params: { q, page },
-    });
+    const responseProduct = await axios.get(
+      `${ADMIN_PRODUCTS_ENDPOINT}/list-products`,
+      {
+        params: { q, page },
+      }
+    );
 
     if (responseProduct) {
       logger("Product information from database:", responseProduct);
@@ -46,7 +49,7 @@ export const existingProduct = async (q: any, page: any) => {
 export const deleteProduct = async (productId: any) => {
   try {
     const responseDeletedProduct = await axios.delete(
-      `${ADMIN_ENDPOINT}/delete-products/${productId}`
+      `${ADMIN_PRODUCTS_ENDPOINT}/delete-products/${productId}`
     );
 
     if (!responseDeletedProduct) {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ADMIN_ENDPOINT, USER_ENDPOINT } from "@/utils/api";
+import { ADMIN_USERS_ENDPOINT, USER_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
 export const loginUser = async (email: string, password: string) => {
@@ -43,7 +43,7 @@ export const logoutUser = async (token: any) => {
 export const deleteUser = async (userId: any) => {
   try {
     const responseDeletedUser = await axios.delete(
-      `${ADMIN_ENDPOINT}/delete-users/${userId}`
+      `${ADMIN_USERS_ENDPOINT}/delete-users/${userId}`
     );
 
     if (responseDeletedUser) {
@@ -60,7 +60,7 @@ export const deleteUser = async (userId: any) => {
 export const newStaff = async (formData: FormData) => {
   try {
     const responseNewStaff = await axios.post(
-      `${ADMIN_ENDPOINT}/new-user`,
+      `${ADMIN_USERS_ENDPOINT}/new-user`,
       formData
     );
 
@@ -77,12 +77,15 @@ export const newStaff = async (formData: FormData) => {
 
 export const viewStaffInfo = async (token: any, userId: any) => {
   try {
-    const responseViewStaff = await axios.get(`${ADMIN_ENDPOINT}/single-user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      params: { userId },
-    });
+    const responseViewStaff = await axios.get(
+      `${ADMIN_USERS_ENDPOINT}/single-user`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { userId },
+      }
+    );
 
     if (responseViewStaff) {
       logger("Staff info:", responseViewStaff);
@@ -102,7 +105,7 @@ export const updateStaffInfo = async (
 ) => {
   try {
     const responseUpdateStaff = await axios.put(
-      `${ADMIN_ENDPOINT}/update-user/${userId}`,
+      `${ADMIN_USERS_ENDPOINT}/update-user/${userId}`,
       formData,
       {
         // headers: {
@@ -124,9 +127,12 @@ export const updateStaffInfo = async (
 
 export const existingStaff = async (q: any, page: any) => {
   try {
-    const responseStaff = await axios.get(`${ADMIN_ENDPOINT}/list-users`, {
-      params: { q, page },
-    });
+    const responseStaff = await axios.get(
+      `${ADMIN_USERS_ENDPOINT}/list-users`,
+      {
+        params: { q, page },
+      }
+    );
 
     if (!responseStaff) {
       logger("No existing staff:", responseStaff);
