@@ -106,7 +106,7 @@ export const deleteDistricts = async (districtId: any) => {
       logger("No existing district:", responseDeletedDistricts);
     }
 
-    return responseDeletedDistricts.data.data;
+    return responseDeletedDistricts.data;
   } catch (error: any) {
     logger("Error deleting district in database:", error);
     throw Error(
