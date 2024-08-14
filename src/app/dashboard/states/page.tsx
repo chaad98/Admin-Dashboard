@@ -47,8 +47,8 @@ const StatesPage = ({ searchParams }: any) => {
     try {
       setIsLoading(true);
       const response = await deleteStates(stateId);
-      logger("Delete state response:", response.data.message);
-      toast.success(response.data.message);
+      logger("Delete state response:", response.message);
+      toast.success(response.message);
       setStates(states.filter((state: any) => state._id !== stateId));
       router.push("/dashboard/states");
     } catch (error: any) {

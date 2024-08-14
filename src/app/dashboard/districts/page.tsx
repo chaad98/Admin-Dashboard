@@ -47,8 +47,8 @@ const DistrictsPage = ({ searchParams }: any) => {
     try {
       setIsLoading(true);
       const response = await deleteDistricts(districtId);
-      logger("Delete district response:", response.data.message);
-      toast.success(response.data.message);
+      logger("Delete district response:", response.message);
+      toast.success(response.message);
       setDistricts(
         districts.filter((district: any) => district._id !== districtId)
       );
