@@ -95,7 +95,7 @@ const menuItems = [
       },
       {
         title: "Business Category",
-        path: "/dashboard/settings",
+        path: "/dashboard/b-category",
         icon: <MdOutlineSettings />,
       },
       {
