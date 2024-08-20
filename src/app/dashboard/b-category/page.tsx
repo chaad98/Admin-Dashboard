@@ -11,7 +11,10 @@ import { useEffect, useRef, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { existingBCategory } from "@/services/businessCategoryService";
+import {
+  deleteBCategory,
+  existingBCategory,
+} from "@/services/businessCategoryService";
 
 const BusinessCategoryPage = ({ searchParams }: any) => {
   const [bCategory, setBCategory] = useState([]);
