@@ -2,7 +2,10 @@
 
 import Loading from "@/app/ui/dashboard/loading/loading";
 import styles from "@/app/ui/dashboard/state/singleState/singleState.module.css";
-import { updateStatefInfo, viewStateInfo } from "@/services/stateService";
+import {
+  updateBCategoryInfo,
+  viewBusinessCategoryInfo,
+} from "@/services/businessCategoryService";
 import useAuthStore from "@/store/useAuthStore";
 import { logger } from "@/utils/logger";
 import Image from "next/image";
@@ -11,9 +14,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 
-const SingleStatePage = () => {
-  const [state, setState] = useState<any>(null);
-  const [stateImage, setStateImage] = useState<File | null>(null);
+const SingleBusinessCategoryPage = () => {
+  const [bCategory, setBCategory] = useState<any>(null);
+  const [businessCategoryImage, setBusinessCategoryImage] =
+    useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { token } = useAuthStore();
   const { id }: any = useParams();
@@ -22,7 +26,7 @@ const SingleStatePage = () => {
 
   useEffect(() => {
     if (!hasFetched.current) {
-      singleState(token, id);
+      singleBCategory(token, id);
       hasFetched.current = true;
     }
   }, [token, id]);
@@ -33,8 +37,8 @@ const SingleStatePage = () => {
     >
   ) => {
     const { name, value } = e.target;
-    setState((prevState: any) => ({
-      ...prevState,
+    setBCategory((prevBCategory: any) => ({
+      ...prevBCategory,
       [name]: value,
     }));
   };
@@ -43,35 +47,35 @@ const SingleStatePage = () => {
     e.preventDefault();
 
     try {
-      if (!state.title) {
-        toast.warning("Please make sure state name is not empty");
+      if (!bCategory.title) {
+        toast.warning("Please make sure business category name is not empty");
         return;
       }
 
       const formData = new FormData();
-      formData.append("title", state.title);
+      formData.append("title", bCategory.title);
 
-      if (stateImage) {
-        formData.append("stateImage", stateImage);
+      if (businessCategoryImage) {
+        formData.append("businessCategoryImage", businessCategoryImage);
       }
 
-      const response = await updateStatefInfo(token, id, formData);
+      const response = await updateBCategoryInfo(id, formData);
 
       if (response.status === 200) {
         toast.success(response.data.message);
-        router.push("/dashboard/states");
+        router.push("/dashboard/b-category");
       }
     } catch (error: any) {
       toast.error(error.message);
     }
   };
 
-  const singleState = async (token: any, stateId: any) => {
+  const singleBCategory = async (token: any, bCategoryId: any) => {
     try {
       setIsLoading(true);
-      const response = await viewStateInfo(token, stateId);
-      logger("State data:", response.data);
-      setState(response.data);
+      const response = await viewBusinessCategoryInfo(bCategoryId);
+      logger("Business category data:", response.data);
+      setBCategory(response.data);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -83,8 +87,10 @@ const SingleStatePage = () => {
     return <Loading />;
   }
 
-  if (!state) {
-    return <div className={styles.noUserContainer}>No state found</div>;
+  if (!bCategory) {
+    return (
+      <div className={styles.noUserContainer}>No business category found</div>
+    );
   }
 
   return (
@@ -92,12 +98,12 @@ const SingleStatePage = () => {
       <div className={styles.infoContainer}>
         <div className={styles.imgContainer}>
           <Image
-            src={state.image ? state.image : "/noavatar.png"}
-            alt="State Image"
+            src={bCategory.image ? bCategory.image : "/noavatar.png"}
+            alt="Business category image"
             fill
           />
         </div>
-        {state.title}
+        {bCategory.title}
       </div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -105,14 +111,14 @@ const SingleStatePage = () => {
           <input
             type="text"
             name="title"
-            placeholder="Your state..."
-            value={state.title}
+            placeholder="Your business category..."
+            value={bCategory.title}
             onChange={handleChange}
           />
           <FileUpload
-            label="State image"
-            file={stateImage}
-            setFile={setStateImage}
+            label="Business category image"
+            file={businessCategoryImage}
+            setFile={setBusinessCategoryImage}
           />
           <button className={styles.btnUpdate}>Submit</button>
         </form>
@@ -160,4 +166,4 @@ const FileUpload = ({
   );
 };
 
-export default SingleStatePage;
+export default SingleBusinessCategoryPage;
