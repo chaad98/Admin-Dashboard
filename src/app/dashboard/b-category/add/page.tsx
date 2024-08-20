@@ -1,16 +1,16 @@
 "use client";
 
 import styles from "@/app/ui/dashboard/state/addState/addState.module.css";
-import { newState } from "@/services/stateService";
+import { newBusinessCategory } from "@/services/businessCategoryService";
 import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 
-const AddStatePage = () => {
+const AddBusinessCategoryPage = () => {
   const [name, setName] = useState("");
-  const [stateImage, setStateImage] = useState<File | null>(null);
+  const [bCategoryImage, setBCategoryImage] = useState<File | null>(null);
   const { token } = useAuthStore();
   const router = useRouter();
 
@@ -19,22 +19,22 @@ const AddStatePage = () => {
 
     try {
       if (!name) {
-        return toast.warning("Please enter the state name");
+        return toast.warning("Please enter the business category name");
       }
 
       const formData = new FormData();
 
       formData.append("name", name);
 
-      if (stateImage) {
-        formData.append("stateImage", stateImage);
+      if (bCategoryImage) {
+        formData.append("bCategoryImage", bCategoryImage);
       }
 
-      const response = await newState(token, formData);
+      const response = await newBusinessCategory(formData);
 
       if (response.status === 200) {
         toast.success(response.data.message);
-        router.push("/dashboard/states");
+        router.push("/dashboard/b-category");
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -53,9 +53,9 @@ const AddStatePage = () => {
           required
         />
         <FileUpload
-          label="State image"
-          file={stateImage}
-          setFile={setStateImage}
+          label="Business category image"
+          file={bCategoryImage}
+          setFile={setBCategoryImage}
         />
         <button type="submit">Submit</button>
       </form>
@@ -102,4 +102,4 @@ const FileUpload = ({
   );
 };
 
-export default AddStatePage;
+export default AddBusinessCategoryPage;
