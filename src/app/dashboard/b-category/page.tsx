@@ -53,7 +53,7 @@ const BusinessCategoryPage = ({ searchParams }: any) => {
       logger("Delete business category response:", response.message);
       toast.success(response.message);
       setBCategory(
-        bCategory.filter((category: any) => category._id !== category)
+        bCategory.filter((category: any) => category._id !== bCategoryId)
       );
       router.push("/dashboard/b-category");
     } catch (error: any) {
