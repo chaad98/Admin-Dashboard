@@ -14,6 +14,8 @@ import {
   MdOutlineStorefront,
   MdOutlineMyLocation,
   MdShareLocation,
+  MdBusiness,
+  MdKey,
 } from "react-icons/md";
 import styles from "./sidebar.module.css";
 import MenuLink from "./menuLink/menuLink";
@@ -96,12 +98,12 @@ const menuItems = [
       {
         title: "Business Category",
         path: "/dashboard/b-category",
-        icon: <MdOutlineSettings />,
+        icon: <MdBusiness />,
       },
       {
         title: "License Type",
-        path: "/dashboard/settings",
-        icon: <MdOutlineSettings />,
+        path: "/dashboard/l-type",
+        icon: <MdKey />,
       },
       {
         title: "Help",
