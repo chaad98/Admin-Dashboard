@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/app/ui/dashboard/state/addState/addState.module.css";
+import styles from "@/app/ui/dashboard/b-category/addBusinessCategory/addBusinessCategory.module.css";
 import { newBusinessCategory } from "@/services/businessCategoryService";
 import useAuthStore from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";

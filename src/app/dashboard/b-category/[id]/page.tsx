@@ -1,7 +1,7 @@
 "use client";
 
 import Loading from "@/app/ui/dashboard/loading/loading";
-import styles from "@/app/ui/dashboard/state/singleState/singleState.module.css";
+import styles from "@/app/ui/dashboard/b-category/singleBusinessCategory/singleBusinessCategory.module.css";
 import {
   updateBCategoryInfo,
   viewBusinessCategoryInfo,
