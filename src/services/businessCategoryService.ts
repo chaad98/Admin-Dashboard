@@ -66,7 +66,8 @@ export const updateBCategoryInfo = async (
 ) => {
   try {
     const responseUpdatedBCategory = await axios.put(
-      `${ADMIN_BUSINESS_CATEGORY_ENDPOINT}/update-business-category/${bCategoryId}`
+      `${ADMIN_BUSINESS_CATEGORY_ENDPOINT}/update-business-category/${bCategoryId}`,
+      formData
     );
 
     if (responseUpdatedBCategory) {
