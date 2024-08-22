@@ -11,10 +11,11 @@ import {
 
 const Navbar = () => {
   const pathName = usePathname();
+  const newPath = pathName ? pathName.split("/").pop() : "";
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{pathName.split("/").pop()}</div>
+      <div className={styles.title}>{newPath}</div>
       <div className={styles.menu}>
         <div className={styles.search}>
           <MdSearch />
