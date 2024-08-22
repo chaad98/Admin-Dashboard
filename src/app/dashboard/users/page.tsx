@@ -103,7 +103,7 @@ const UsersPage = ({ searchParams }: any) => {
                 <td>{staff.isActive ? "Active" : "Inactive"}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/users/${staff._id}`}>
+                    <Link href={`/dashboard/users/${staff.name}`}>
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>
