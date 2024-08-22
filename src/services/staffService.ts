@@ -75,7 +75,7 @@ export const newStaff = async (formData: FormData) => {
   }
 };
 
-export const viewStaffInfo = async (token: any, userId: any) => {
+export const viewStaffInfo = async (token: any, userName: any) => {
   try {
     const responseViewStaff = await axios.get(
       `${ADMIN_USERS_ENDPOINT}/single-user`,
@@ -83,7 +83,7 @@ export const viewStaffInfo = async (token: any, userId: any) => {
         // headers: {
         //   Authorization: `Bearer ${token}`,
         // },
-        params: { userId },
+        params: { userName },
       }
     );
 
