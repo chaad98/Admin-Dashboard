@@ -14,7 +14,9 @@ const HomePage = () => {
     if (!hasFetched.current) {
       const interval = setInterval(fetchData, 10000); // Fetch data every 10 seconds. No need for revalidation
 
-      hasFetched.current = true;
+      if (interval) {
+        hasFetched.current = true;
+      }
 
       return () => {
         hasFetched.current = false;
