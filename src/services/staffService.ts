@@ -80,9 +80,9 @@ export const viewStaffInfo = async (token: any, userId: any) => {
     const responseViewStaff = await axios.get(
       `${ADMIN_USERS_ENDPOINT}/single-user`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
         params: { userId },
       }
     );
