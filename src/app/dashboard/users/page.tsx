@@ -47,7 +47,8 @@ const UsersPage = ({ searchParams }: any) => {
   const handleDelete = async (userId: any) => {
     try {
       setIsLoading(true);
-      const response = await deleteUser(userId);
+      const encryptedUserId = encodedObjectId(userId);
+      const response = await deleteUser(encryptedUserId);
       logger("Delete staff/user response:", response.data.message);
       toast.success(response.data.message);
       setStaffs(staffs.filter((staff: any) => staff._id !== userId));
