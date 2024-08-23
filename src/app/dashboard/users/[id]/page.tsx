@@ -79,10 +79,10 @@ const SingleUserPage = () => {
     }
   };
 
-  const singleStaff = async (token: any, userName: any) => {
+  const singleStaff = async (token: any, userId: any) => {
     try {
       setIsLoading(true);
-      const response = await viewStaffInfo(token, userName);
+      const response = await viewStaffInfo(token, userId);
       logger("Staff data:", response.data);
       setUser(response.data);
     } catch (error: any) {
