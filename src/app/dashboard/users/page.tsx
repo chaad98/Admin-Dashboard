@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { encodedObjectId } from "@/utils/encrypt";
 
 const UsersPage = ({ searchParams }: any) => {
   const [staffs, setStaffs] = useState([]);
@@ -103,7 +104,9 @@ const UsersPage = ({ searchParams }: any) => {
                 <td>{staff.isActive ? "Active" : "Inactive"}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/users/${staff.name}`}>
+                    <Link
+                      href={`/dashboard/users/${encodedObjectId(staff._id)}`}
+                    >
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>
