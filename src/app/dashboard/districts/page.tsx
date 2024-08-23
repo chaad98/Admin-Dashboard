@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { encodedObjectId } from "@/utils/encrypt";
 
 const DistrictsPage = ({ searchParams }: any) => {
   const [districts, setDistricts] = useState([]);
@@ -46,7 +47,8 @@ const DistrictsPage = ({ searchParams }: any) => {
   const handleDelete = async (districtId: any) => {
     try {
       setIsLoading(true);
-      const response = await deleteDistricts(districtId);
+      const encryptedDistrictId = encodedObjectId(districtId);
+      const response = await deleteDistricts(encryptedDistrictId);
       logger("Delete district response:", response.message);
       toast.success(response.message);
       setDistricts(
@@ -101,7 +103,11 @@ const DistrictsPage = ({ searchParams }: any) => {
                 <td>{formattedDate(district.createdAt)}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/districts/${district._id}`}>
+                    <Link
+                      href={`/dashboard/districts/${encodedObjectId(
+                        district._id
+                      )}`}
+                    >
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>

@@ -15,6 +15,7 @@ import {
   deleteBCategory,
   existingBCategory,
 } from "@/services/businessCategoryService";
+import { encodedObjectId } from "@/utils/encrypt";
 
 const BusinessCategoryPage = ({ searchParams }: any) => {
   const [bCategory, setBCategory] = useState([]);
@@ -49,7 +50,8 @@ const BusinessCategoryPage = ({ searchParams }: any) => {
   const handleDelete = async (bCategoryId: any) => {
     try {
       setIsLoading(true);
-      const response = await deleteBCategory(bCategoryId);
+      const encryptedBCategoryId = encodedObjectId(bCategoryId);
+      const response = await deleteBCategory(encryptedBCategoryId);
       logger("Delete business category response:", response.message);
       toast.success(response.message);
       setBCategory(
@@ -102,7 +104,11 @@ const BusinessCategoryPage = ({ searchParams }: any) => {
                 <td>{formattedDate(category.createdAt)}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/b-category/${category._id}`}>
+                    <Link
+                      href={`/dashboard/b-category/${encodedObjectId(
+                        category._id
+                      )}`}
+                    >
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>

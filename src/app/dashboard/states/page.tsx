@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import Loading from "@/app/ui/dashboard/loading/loading";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { encodedObjectId } from "@/utils/encrypt";
 
 const StatesPage = ({ searchParams }: any) => {
   const [states, setStates] = useState([]);
@@ -46,7 +47,8 @@ const StatesPage = ({ searchParams }: any) => {
   const handleDelete = async (stateId: any) => {
     try {
       setIsLoading(true);
-      const response = await deleteStates(stateId);
+      const encryptedStateId = encodedObjectId(stateId);
+      const response = await deleteStates(encryptedStateId);
       logger("Delete state response:", response.message);
       toast.success(response.message);
       setStates(states.filter((state: any) => state._id !== stateId));
@@ -99,7 +101,9 @@ const StatesPage = ({ searchParams }: any) => {
                 <td>{formattedDate(state.createdAt)}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/states/${state._id}`}>
+                    <Link
+                      href={`/dashboard/states/${encodedObjectId(state._id)}`}
+                    >
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>

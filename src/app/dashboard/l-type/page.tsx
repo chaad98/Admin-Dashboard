@@ -12,6 +12,7 @@ import Loading from "@/app/ui/dashboard/loading/loading";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { deleteLType, existingLType } from "@/services/licenseTypeService";
+import { encodedObjectId } from "@/utils/encrypt";
 
 const LicenseTypePage = ({ searchParams }: any) => {
   const [lType, setLType] = useState([]);
@@ -46,7 +47,8 @@ const LicenseTypePage = ({ searchParams }: any) => {
   const handleDelete = async (lTypeId: any) => {
     try {
       setIsLoading(true);
-      const response = await deleteLType(lTypeId);
+      const encryptedLTypeId = encodedObjectId(lTypeId);
+      const response = await deleteLType(encryptedLTypeId);
       logger("Delete license type response:", response.message);
       toast.success(response.message);
       setLType(lType.filter((license: any) => license._id !== lTypeId));
@@ -97,7 +99,9 @@ const LicenseTypePage = ({ searchParams }: any) => {
                 <td>{formattedDate(license.createdAt)}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/l-type/${license._id}`}>
+                    <Link
+                      href={`/dashboard/l-type/${encodedObjectId(license._id)}`}
+                    >
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>
