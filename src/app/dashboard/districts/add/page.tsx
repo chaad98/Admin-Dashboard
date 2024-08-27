@@ -69,7 +69,7 @@ const AddDistrictPage = () => {
           <option value="" selected>
             Choose State
           </option>
-          {states.map((state: { _id: string; title: string }) => (
+          {states.map((state) => (
             <option key={state._id} value={state.title}>
               {state.title}
             </option>
