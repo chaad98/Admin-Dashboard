@@ -23,6 +23,7 @@ export default function RootLayout({ children }: WithChildren) {
         <ToastContainer
           position="top-center"
           autoClose={1500}
+          pauseOnFocusLoss={false}
           pauseOnHover={false}
           closeOnClick
         />
