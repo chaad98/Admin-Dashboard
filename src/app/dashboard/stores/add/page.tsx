@@ -3,6 +3,12 @@
 import styles from "@/app/ui/dashboard/stores/addStore/addStore.module.css";
 import { fetchLatestRetailCode, newStore } from "@/services/storeService";
 import useAuthStore from "@/store/useAuthStore";
+import {
+  arrayBCategory,
+  arrayDistrict,
+  arrayLType,
+  arrayState,
+} from "@/utils/reuse";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -16,21 +22,25 @@ const AddStorePage = () => {
     useState("");
   const [shopAddress1, setShopAddress1] = useState("");
   const [shopAddress2, setShopAddress2] = useState("");
-  const [state, setState] = useState("");
-  const [district, setDistrict] = useState("");
+  const [states, setStates] = useState<any[]>([]);
+  const [selectedState, setSelectedState] = useState("");
+  const [districts, setDistricts] = useState<any[]>([]);
+  const [selectedDistrict, setSelectedDistrict] = useState("");
   const [postcode, setPostcode] = useState("");
   const [city, setCity] = useState("");
   const [googleMapLink, setGoogleMapLink] = useState("");
   const [shopPhoneNumber, setShopPhoneNumber] = useState("");
   const [shopEmail, setShopEmail] = useState("");
-  const [businessCategory, setBusinessCategory] = useState("");
-  const [licenseType, setLicenseType] = useState("");
+  const [businessCategories, setBusinessCategories] = useState<any[]>([]);
+  const [selectedBCategory, setSelectedBCategory] = useState("");
+  const [licenseTypes, setLicenseTypes] = useState<any[]>([]);
+  const [selectedLType, setSelectedLType] = useState("");
   const [companySSM, setCompanySSM] = useState<File | null>(null);
   const [businessLicense, setBusinessLicense] = useState<File | null>(null);
   const [agreement, setAgreement] = useState<File | null>(null);
-  const [status, setStatus] = useState("");
   const [businessImage, setBusinessImage] = useState<File | null>(null);
-  const [product, setProduct] = useState("");
+  const [status, setStatus] = useState("");
+  const [route, setRoute] = useState("");
   const router = useRouter();
   const hasFetched = useRef(false);
   const { token } = useAuthStore();
@@ -38,6 +48,10 @@ const AddStorePage = () => {
   useEffect(() => {
     if (!hasFetched.current) {
       syncRecentRetailCode();
+      arrayState(token, setStates);
+      arrayDistrict(token, setDistricts);
+      arrayBCategory(token, setBusinessCategories);
+      arrayLType(token, setLicenseTypes);
       hasFetched.current = true;
     }
   }, []);
@@ -68,7 +82,7 @@ const AddStorePage = () => {
     e.preventDefault();
 
     try {
-      if (!retailCode || !shopEmail || !shopPhoneNumber) {
+      if (!shopName || !registeredCompanyName) {
         return toast.warning("Please key in all field!");
       }
 
@@ -80,52 +94,39 @@ const AddStorePage = () => {
       formData.append("companyRegistrationNumber", companyRegistrationNumber);
       formData.append("shopAddress1", shopAddress1);
       formData.append("shopAddress2", shopAddress2);
-      formData.append("state", state);
-      formData.append("district", district);
+      formData.append("state", selectedState);
+      formData.append("district", selectedDistrict);
       formData.append("postcode", postcode);
       formData.append("city", city);
       formData.append("googleMapLink", googleMapLink);
       formData.append("shopPhoneNumber", shopPhoneNumber);
       formData.append("shopEmail", shopEmail);
-      formData.append("businessCategory", businessCategory);
-      formData.append("licenseType", licenseType);
+      formData.append("businessCategory", selectedBCategory);
+      formData.append("licenseType", selectedLType);
       formData.append("status", status);
-      formData.append("product", product);
+      formData.append("route", route);
 
-      if (companySSM) formData.append("companySSM", companySSM);
-      if (businessLicense) formData.append("businessLicense", businessLicense);
-      if (agreement) formData.append("agreement", agreement);
-      if (businessImage) formData.append("businessImage", businessImage);
+      if (companySSM) {
+        formData.append("companySSM", companySSM);
+      }
 
-      // const objClient = {
-      //   retailCode,
-      //   shopName,
-      //   registeredCompanyName,
-      //   companyRegistrationNumber,
-      //   shopAddress1,
-      //   shopAddress2,
-      //   state,
-      //   district,
-      //   postcode,
-      //   city,
-      //   googleMapLink,
-      //   shopPhoneNumber,
-      //   shopEmail,
-      //   businessCategory,
-      //   licenseType,
-      //   companySSM,
-      //   businessLicense,
-      //   agreement,
-      //   status,
-      //   businessImage,
-      //   product,
-      // };
+      if (businessLicense) {
+        formData.append("businessLicense", businessLicense);
+      }
+
+      if (agreement) {
+        formData.append("agreement", agreement);
+      }
+
+      if (businessImage) {
+        formData.append("businessImage", businessImage);
+      }
 
       const response = await newStore(token, formData);
 
       if (response.status === 200) {
         toast.success(response.data.message);
-        router.push("/dashboard/users");
+        router.push("/dashboard/stores");
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -179,15 +180,37 @@ const AddStorePage = () => {
           value={shopAddress2}
           onChange={(e) => setShopAddress2(e.target.value)}
         ></textarea>
-        <select name="state" id="state">
-          <option value="null" selected>
+        <select
+          name="state"
+          id="state"
+          value={selectedState}
+          onChange={(e) => setSelectedState(e.target.value)}
+          required
+        >
+          <option value="" selected>
             Choose State
           </option>
+          {states.map((state) => (
+            <option key={state._id} value={state.title}>
+              {state.title}
+            </option>
+          ))}
         </select>
-        <select name="district" id="district">
-          <option value="null" selected>
-            District
+        <select
+          name="district"
+          id="district"
+          value={selectedDistrict}
+          onChange={(e) => setSelectedDistrict(e.target.value)}
+          required
+        >
+          <option value="" selected>
+            Choose District
           </option>
+          {districts.map((district) => (
+            <option key={district._id} value={district.title}>
+              {district.title}
+            </option>
+          ))}
         </select>
         <input
           type="postcode"
@@ -227,15 +250,37 @@ const AddStorePage = () => {
           onChange={(e) => setShopEmail(e.target.value)}
           required
         />
-        <select name="category" id="category">
-          <option value="null" selected>
-            Business Category
+        <select
+          name="category"
+          id="category"
+          value={selectedBCategory}
+          onChange={(e) => setSelectedBCategory(e.target.value)}
+          required
+        >
+          <option value="" selected>
+            Choose Business Category
           </option>
+          {businessCategories.map((bCategory) => (
+            <option key={bCategory._id} value={bCategory.title}>
+              {bCategory.title}
+            </option>
+          ))}
         </select>
-        <select name="license" id="license">
-          <option value="null" selected>
-            License Type
+        <select
+          name="license"
+          id="license"
+          value={selectedLType}
+          onChange={(e) => setSelectedLType(e.target.value)}
+          required
+        >
+          <option value="" selected>
+            Choose License Type
           </option>
+          {licenseTypes.map((license) => (
+            <option key={license._id} value={license.title}>
+              {license.title}
+            </option>
+          ))}
         </select>
         <FileUpload
           label="Company SSM"
@@ -260,19 +305,19 @@ const AddStorePage = () => {
           onChange={(e) => setStatus(e.target.value)}
         >
           <option selected>Status</option>
-          <option value="true">Active</option>
-          <option value="false">Inactive</option>
-          <option value="false">GRN</option>
-          <option value="false">Renovation</option>
-          <option value="false">Temporary Closed</option>
-          <option value="false">Moving Out</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+          <option value="GRN">GRN</option>
+          <option value="Renovation">Renovation</option>
+          <option value="Temporary Closed">Temporary Closed</option>
+          <option value="Moving Out">Moving Out</option>
         </select>
         <input
           type="text"
           placeholder="Route"
           name="text"
-          value={shopEmail}
-          onChange={(e) => setShopEmail(e.target.value)}
+          value={route}
+          onChange={(e) => setRoute(e.target.value)}
           required
         />
         <button type="submit">Submit</button>
