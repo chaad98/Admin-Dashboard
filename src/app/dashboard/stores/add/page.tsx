@@ -187,9 +187,7 @@ const AddStorePage = () => {
           onChange={(e) => setSelectedState(e.target.value)}
           required
         >
-          <option value="" selected>
-            Choose State
-          </option>
+          <option value="">Choose State</option>
           {states.map((state) => (
             <option key={state._id} value={state.title}>
               {state.title}
@@ -203,9 +201,7 @@ const AddStorePage = () => {
           onChange={(e) => setSelectedDistrict(e.target.value)}
           required
         >
-          <option value="" selected>
-            Choose District
-          </option>
+          <option value="">Choose District</option>
           {districts.map((district) => (
             <option key={district._id} value={district.title}>
               {district.title}
@@ -257,9 +253,7 @@ const AddStorePage = () => {
           onChange={(e) => setSelectedBCategory(e.target.value)}
           required
         >
-          <option value="" selected>
-            Choose Business Category
-          </option>
+          <option value="">Choose Business Category</option>
           {businessCategories.map((bCategory) => (
             <option key={bCategory._id} value={bCategory.title}>
               {bCategory.title}
@@ -273,9 +267,7 @@ const AddStorePage = () => {
           onChange={(e) => setSelectedLType(e.target.value)}
           required
         >
-          <option value="" selected>
-            Choose License Type
-          </option>
+          <option value="">Choose License Type</option>
           {licenseTypes.map((license) => (
             <option key={license._id} value={license.title}>
               {license.title}

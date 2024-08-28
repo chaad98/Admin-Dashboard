@@ -66,9 +66,7 @@ const AddDistrictPage = () => {
           value={selectedState}
           onChange={(e) => setSelectedState(e.target.value)}
         >
-          <option value="" selected>
-            Choose State
-          </option>
+          <option value="">Choose State</option>
           {states.map((state) => (
             <option key={state._id} value={state.title}>
               {state.title}
