@@ -10,7 +10,6 @@ export const newStore = async (token: any, formData: FormData) => {
       {
         headers: {
           // Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       }
     );
