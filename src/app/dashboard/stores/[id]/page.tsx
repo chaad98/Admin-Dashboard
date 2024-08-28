@@ -162,7 +162,7 @@ const SingleStorePage = () => {
             name="address1"
             id="address1"
             placeholder="Address 1..."
-            value={stores.address1}
+            value={stores.shopAddress1}
             onChange={handleChange}
           />
           <label>Address 2</label>
@@ -170,7 +170,7 @@ const SingleStorePage = () => {
             name="address2"
             id="address2"
             placeholder="Address 2..."
-            value={stores.address2}
+            value={stores.shopAddress2}
             onChange={handleChange}
           />
           <label>Choose State</label>
