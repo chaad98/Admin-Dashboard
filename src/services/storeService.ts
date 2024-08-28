@@ -64,6 +64,56 @@ export const existingStore = async (q: any, page: any) => {
   }
 };
 
+export const viewStoreInfo = async (token: any, storeId: any) => {
+  try {
+    const responseViewStore = await axios.get(
+      `${ADMIN_STORES_ENDPOINT}/single-store`,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+        },
+        params: { storeId },
+      }
+    );
+
+    if (responseViewStore) {
+      logger("Store info:", responseViewStore);
+    }
+
+    return responseViewStore.data;
+  } catch (error: any) {
+    logger("Error viewing store in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
+export const updateStoreInfo = async (
+  token: any,
+  storeId: any,
+  formData: FormData
+) => {
+  try {
+    const responseUpdateStore = await axios.put(
+      `${ADMIN_STORES_ENDPOINT}/update-district/${storeId}`,
+      formData,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (responseUpdateStore) {
+      logger("Store info updated:", responseUpdateStore);
+    }
+
+    return responseUpdateStore;
+  } catch (error: any) {
+    logger("Error updating store in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const deleteStores = async (storeId: any) => {
   try {
     const responseDeletedStores = await axios.delete(
@@ -74,7 +124,7 @@ export const deleteStores = async (storeId: any) => {
       logger("No existing stores:", responseDeletedStores);
     }
 
-    return responseDeletedStores.data.data;
+    return responseDeletedStores;
   } catch (error: any) {
     logger("Error deleting product in database:", error);
     throw Error(
