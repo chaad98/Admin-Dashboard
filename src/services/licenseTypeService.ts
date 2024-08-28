@@ -2,6 +2,23 @@ import axios from "axios";
 import { ADMIN_LICENSE_TYPE_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
+export const getArrayLType = async (token: any) => {
+  try {
+    const responseArrayLType = await axios.get(
+      `${ADMIN_LICENSE_TYPE_ENDPOINT}/dropdown-license-type`,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`
+        },
+      }
+    );
+    return responseArrayLType.data;
+  } catch (error: any) {
+    logger("Error rendering license type in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const newLicenseType = async (formData: FormData) => {
   try {
     const responseNewLicenseType = await axios.post(

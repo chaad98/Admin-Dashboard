@@ -2,6 +2,23 @@ import axios from "axios";
 import { ADMIN_DISTRICTS_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
+export const getArrayDistrict = async (token: any) => {
+  try {
+    const responseArrayDistrict = await axios.get(
+      `${ADMIN_DISTRICTS_ENDPOINT}/dropdown-districts`,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`
+        },
+      }
+    );
+    return responseArrayDistrict.data;
+  } catch (error: any) {
+    logger("Error rendering district in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const newDistrict = async (token: any, formData: FormData) => {
   try {
     const responseNewDistrict = await axios.post(
@@ -10,7 +27,6 @@ export const newDistrict = async (token: any, formData: FormData) => {
       {
         headers: {
           // Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       }
     );

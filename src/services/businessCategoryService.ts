@@ -2,6 +2,23 @@ import axios from "axios";
 import { ADMIN_BUSINESS_CATEGORY_ENDPOINT } from "@/utils/api";
 import { logger } from "@/utils/logger";
 
+export const getArrayBCategory = async (token: any) => {
+  try {
+    const responseArrayBCategory = await axios.get(
+      `${ADMIN_BUSINESS_CATEGORY_ENDPOINT}/dropdown-business-category`,
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`
+        },
+      }
+    );
+    return responseArrayBCategory.data;
+  } catch (error: any) {
+    logger("Error rendering business category in database:", error);
+    throw Error(error.response.data.error || error.response.data.message);
+  }
+};
+
 export const newBusinessCategory = async (formData: FormData) => {
   try {
     const responseNewBusinessCategory = await axios.post(
