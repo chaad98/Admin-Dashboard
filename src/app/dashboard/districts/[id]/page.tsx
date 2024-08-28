@@ -118,7 +118,7 @@ const SingleDistrictPage = () => {
             value={selectedState}
             onChange={handleChange}
           >
-            {states.map((state: { id: string; title: string }) => (
+            {states.map((state) => (
               <option key={state.id} value={state.title}>
                 {state.title}
               </option>
