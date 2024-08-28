@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { encodedObjectId } from "@/utils/encrypt";
 
 const StoresPage = ({ searchParams }: any) => {
   const [stores, setStores] = useState([]);
@@ -46,8 +47,10 @@ const StoresPage = ({ searchParams }: any) => {
   const handleDelete = async (storeId: any) => {
     try {
       setIsLoading(true);
-      const response = await deleteStores(storeId);
-      logger("Deleted store response:", response);
+      const encryptedStoreId = encodedObjectId(storeId);
+      const response = await deleteStores(encryptedStoreId);
+      logger("Deleted store response:", response.data.message);
+      toast.success(response.data.message);
       setStores(stores.filter((store: any) => store._id !== storeId));
       router.push("/dashboard/stores");
     } catch (error: any) {
@@ -89,21 +92,23 @@ const StoresPage = ({ searchParams }: any) => {
               <tr key={store._id}>
                 <td className={styles.store}>
                   <Image
-                    src={store.profilePicture || "/nostore.png"}
+                    src={store.businessImage || "/nostore.png"}
                     alt=""
                     width={40}
                     height={40}
                     className={styles.storeImage}
                   />
-                  {store.name}
+                  {store.shopName}
                 </td>
-                <td>{store.email}</td>
+                <td>{store.retailCode}</td>
                 <td>{formattedDate(store.createdAt)}</td>
-                <td>{store.isAdmin ? "Admin" : "store"}</td>
-                <td>{store.isActive ? "Active" : "Inactive"}</td>
+                <td>{store.shopPhoneNumber}</td>
+                <td>{store.status}</td>
                 <td>
                   <div className={styles.buttons}>
-                    <Link href={`/dashboard/stores/${store._id}`}>
+                    <Link
+                      href={`/dashboard/stores/${encodedObjectId(store._id)}`}
+                    >
                       <button className={`${styles.button} ${styles.view}`}>
                         View
                       </button>
