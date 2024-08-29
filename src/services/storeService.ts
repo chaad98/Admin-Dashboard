@@ -94,7 +94,7 @@ export const updateStoreInfo = async (
 ) => {
   try {
     const responseUpdateStore = await axios.put(
-      `${ADMIN_STORES_ENDPOINT}/update-district/${storeId}`,
+      `${ADMIN_STORES_ENDPOINT}/update-store/${storeId}`,
       formData,
       {
         headers: {
