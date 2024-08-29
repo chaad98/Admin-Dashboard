@@ -91,13 +91,14 @@ const StoresPage = ({ searchParams }: any) => {
             stores.map((store: any) => (
               <tr key={store._id}>
                 <td className={styles.store}>
-                  <Image
+                  {/* <Image
                     src={store.businessImage || "/nostore.png"}
                     alt=""
                     width={40}
                     height={40}
                     className={styles.storeImage}
-                  />
+                  /> */}{" "}
+                  {/*Future aiman will think about this*/}
                   {store.shopName}
                 </td>
                 <td>{store.retailCode}</td>
