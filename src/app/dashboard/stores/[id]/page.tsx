@@ -43,7 +43,7 @@ const SingleStorePage = () => {
       singleStore(token, id);
       hasFetched.current = true;
     }
-  });
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -64,24 +64,50 @@ const SingleStorePage = () => {
       handlers[name](value);
     }
 
-    setStores((prevDistrict: any) => ({
-      ...prevDistrict,
+    setStores((prevStore: any) => ({
+      ...prevStore,
       [name]: value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const formData = new FormData();
 
-    const formData = new FormData();
+      formData.append("shopName", stores.shopName);
+      formData.append("registeredCompanyName", stores.registeredCompanyName);
+      formData.append(
+        "companyRegistrationNumber",
+        stores.companyRegistrationNumber
+      );
+      formData.append("shopAddress1", stores.shopAddress1);
+      formData.append("shopAddress2", stores.shopAddress2);
+      formData.append("state", selectedState);
+      formData.append("district", selectedDistrict);
+      formData.append("postcode", stores.postcode);
+      formData.append("city", stores.city);
+      formData.append("googleMapLink", stores.googleMapLink);
+      formData.append("shopPhoneNumber", stores.shopPhoneNumber);
+      formData.append("shopEmail", stores.shopEmail);
+      formData.append("businessCategory", selectedBCategory);
+      formData.append("licenseType", selectedLType);
+      formData.append("status", selectedStatus);
+      formData.append("route", stores.route);
 
-    formData;
+      if (companySSM) formData.append("companySSM", companySSM);
+      if (businessLicense) formData.append("businessLicense", businessLicense);
+      if (agreement) formData.append("agreement", agreement);
+      if (businessImage) formData.append("businessImage", businessImage);
 
-    const response = await updateStoreInfo(token, id, formData);
+      const response = await updateStoreInfo(token, id, formData);
 
-    if (response.status === 200) {
-      toast.success(response.data.message);
-      router.push("/dashboard/districts");
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        router.push("/dashboard/stores");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
@@ -159,7 +185,7 @@ const SingleStorePage = () => {
           />
           <label>Address 1</label>
           <textarea
-            name="address1"
+            name="shopAddress1"
             id="address1"
             placeholder="Address 1..."
             value={stores.shopAddress1}
@@ -167,7 +193,7 @@ const SingleStorePage = () => {
           />
           <label>Address 2</label>
           <textarea
-            name="address2"
+            name="shopAddress2"
             id="address2"
             placeholder="Address 2..."
             value={stores.shopAddress2}
