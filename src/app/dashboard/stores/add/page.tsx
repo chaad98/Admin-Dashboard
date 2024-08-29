@@ -296,7 +296,7 @@ const AddStorePage = () => {
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         >
-          <option>Status</option>
+          <option value="">Status</option>
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
           <option value="GRN">GRN</option>
