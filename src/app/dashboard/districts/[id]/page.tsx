@@ -52,21 +52,24 @@ const SingleDistrictPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const formData = new FormData();
 
-    const formData = new FormData();
+      formData.append("title", districts.title);
+      formData.append("state", selectedState);
 
-    formData.append("title", districts.title);
-    formData.append("state", selectedState);
+      if (districtImage) {
+        formData.append("districtImage", districtImage);
+      }
 
-    if (districtImage) {
-      formData.append("districtImage", districtImage);
-    }
+      const response = await updateDistrictInfo(token, id, formData);
 
-    const response = await updateDistrictInfo(token, id, formData);
-
-    if (response.status === 200) {
-      toast.success(response.data.message);
-      router.push("/dashboard/districts");
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        router.push("/dashboard/districts");
+      }
+    } catch (error: any) {
+      toast.error(error.message);
     }
   };
 
