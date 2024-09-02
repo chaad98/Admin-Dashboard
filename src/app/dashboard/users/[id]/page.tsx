@@ -3,7 +3,6 @@
 import Loading from "@/app/ui/dashboard/loading/loading";
 import styles from "@/app/ui/dashboard/user/singleUser/singleUser.module.css";
 import { updateStaffInfo, viewStaffInfo } from "@/services/staffService";
-import useAuthStore from "@/store/useAuthStore";
 import { logger } from "@/utils/logger";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -15,17 +14,16 @@ const SingleUserPage = () => {
   const [user, setUser] = useState<any>(null);
   const [userImage, setUserImage] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { token } = useAuthStore();
   const { id }: any = useParams();
   const hasFetched = useRef(false);
   const router = useRouter();
 
   useEffect(() => {
     if (!hasFetched.current) {
-      singleStaff(token, id);
+      singleStaff(id);
       hasFetched.current = true;
     }
-  }, [token, id]);
+  }, [id]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -68,7 +66,7 @@ const SingleUserPage = () => {
         formData.append("userImage", userImage);
       }
 
-      const response = await updateStaffInfo(token, id, formData);
+      const response = await updateStaffInfo(id, formData);
 
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -79,10 +77,10 @@ const SingleUserPage = () => {
     }
   };
 
-  const singleStaff = async (token: any, userId: any) => {
+  const singleStaff = async (userId: any) => {
     try {
       setIsLoading(true);
-      const response = await viewStaffInfo(token, userId);
+      const response = await viewStaffInfo(userId);
       logger("Staff data:", response.data);
       setUser(response.data);
     } catch (error: any) {
