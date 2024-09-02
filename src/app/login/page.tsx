@@ -2,17 +2,18 @@
 
 import styles from "@/app/ui/login/login.module.css";
 import { loginUser } from "@/services/staffService";
-import useAuthStore from "@/store/useAuthStore";
+import { setUser } from "@/store/authSlice";
 import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setToken, setUser } = useAuthStore();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,12 +22,12 @@ const LoginPage = () => {
       const response = await loginUser(email, password);
       logger("Response here:", response);
 
-      if (response.data.isAdmin === false) {
-        return toast.warning("User is not an admin!");
-      }
+      // I MUTE THIS LINE BELOW BECAUSE THERE MIGHT BE CHANGES IN USER TYPE/ROLE IN FUTURE
+      // if (response.data.isAdmin === false) {
+      //   return toast.warning("User is not an admin!");
+      // }
 
-      setToken(response.token);
-      setUser(response.data);
+      dispatch(setUser({ user: response.data, token: response.token }));
       toast.success(response.message);
       router.push("/dashboard");
     } catch (error: any) {
