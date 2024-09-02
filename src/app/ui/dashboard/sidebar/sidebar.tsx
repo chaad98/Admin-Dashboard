@@ -23,8 +23,10 @@ import Image from "next/image";
 import { logoutUser } from "@/services/staffService";
 import { logger } from "@/utils/logger";
 import { useRouter } from "next/navigation";
-import useAuthStore from "@/store/useAuthStore";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/store/authSlice";
+import { RootState } from "@/store/store";
 
 const menuItems = [
   {
@@ -116,17 +118,18 @@ const menuItems = [
 
 const Sidebar = () => {
   const router = useRouter();
-  const { token, logout } = useAuthStore();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const handleLogout = async () => {
     try {
-      const responseLogout = await logoutUser(token);
+      const responseLogout = await logoutUser();
       logger("Response:", responseLogout);
 
       if (responseLogout.status === 200) {
         logger("Response logout:", responseLogout.data.message);
         toast.success(responseLogout.data.message);
-        logout();
+        dispatch(logout());
         router.push("/login");
       }
     } catch (error: any) {
@@ -145,8 +148,10 @@ const Sidebar = () => {
           height={50}
         />
         <div className={styles.userDetail}>
-          <span className={styles.userName}>Odar DaaS</span>
-          <span className={styles.userTitle}>Administrator</span>
+          <span className={styles.userName}>{user?.name || "Demo"}</span>
+          <span className={styles.userTitle}>
+            {user?.isAdmin ? "Administrator" : "Guest"}
+          </span>
         </div>
       </div>
       <ul className={styles.list}>
