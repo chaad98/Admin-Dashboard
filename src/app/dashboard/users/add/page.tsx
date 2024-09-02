@@ -22,12 +22,6 @@ const AddUserPage = () => {
     e.preventDefault();
 
     try {
-      if (!isAdmin || !isActive) {
-        return toast.warning(
-          "Please select both options admin and active status value"
-        );
-      }
-
       const formData = new FormData();
       formData.append("name", name);
       formData.append("email", email);
