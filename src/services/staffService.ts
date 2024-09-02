@@ -4,10 +4,16 @@ import { logger } from "@/utils/logger";
 
 export const loginUser = async (email: string, password: string) => {
   try {
-    const responseLogin = await axios.post(`${USER_ENDPOINT}/login`, {
-      email,
-      password,
-    });
+    const responseLogin = await axios.post(
+      `${USER_ENDPOINT}/login`,
+      {
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
 
     if (!responseLogin) {
       logger("No response from login:", responseLogin);
@@ -25,12 +31,10 @@ export const loginUser = async (email: string, password: string) => {
   }
 };
 
-export const logoutUser = async (token: any) => {
+export const logoutUser = async () => {
   try {
     const responseLogout = await axios.delete(`${USER_ENDPOINT}/logout`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      withCredentials: true,
     });
 
     return responseLogout;
@@ -43,7 +47,10 @@ export const logoutUser = async (token: any) => {
 export const deleteUser = async (userId: any) => {
   try {
     const responseDeletedUser = await axios.delete(
-      `${ADMIN_USERS_ENDPOINT}/delete-users/${userId}`
+      `${ADMIN_USERS_ENDPOINT}/delete-users/${userId}`,
+      {
+        withCredentials: true,
+      }
     );
 
     if (responseDeletedUser) {
@@ -61,7 +68,10 @@ export const newStaff = async (formData: FormData) => {
   try {
     const responseNewStaff = await axios.post(
       `${ADMIN_USERS_ENDPOINT}/new-user`,
-      formData
+      formData,
+      {
+        withCredentials: true,
+      }
     );
 
     if (responseNewStaff) {
@@ -75,15 +85,13 @@ export const newStaff = async (formData: FormData) => {
   }
 };
 
-export const viewStaffInfo = async (token: any, userId: any) => {
+export const viewStaffInfo = async (userId: any) => {
   try {
     const responseViewStaff = await axios.get(
       `${ADMIN_USERS_ENDPOINT}/single-user`,
       {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
         params: { userId },
+        withCredentials: true,
       }
     );
 
@@ -98,19 +106,13 @@ export const viewStaffInfo = async (token: any, userId: any) => {
   }
 };
 
-export const updateStaffInfo = async (
-  token: any,
-  userId: any,
-  formData: FormData
-) => {
+export const updateStaffInfo = async (userId: any, formData: FormData) => {
   try {
     const responseUpdateStaff = await axios.put(
       `${ADMIN_USERS_ENDPOINT}/update-user/${userId}`,
       formData,
       {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
+        withCredentials: true,
       }
     );
 
@@ -130,6 +132,7 @@ export const existingStaff = async (q: any, page: any) => {
     const responseStaff = await axios.get(
       `${ADMIN_USERS_ENDPOINT}/list-users`,
       {
+        withCredentials: true,
         params: { q, page },
       }
     );
