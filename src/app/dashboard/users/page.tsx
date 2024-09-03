@@ -52,6 +52,7 @@ const UsersPage = ({ searchParams }: any) => {
       logger("Delete staff/user response:", response.data.message);
       toast.success(response.data.message);
       setStaffs(staffs.filter((staff: any) => staff._id !== userId));
+      await fetchStaff();
       router.push("/dashboard/users");
     } catch (error: any) {
       toast.error(error.message);
