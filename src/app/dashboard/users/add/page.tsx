@@ -87,7 +87,7 @@ const AddUserPage = () => {
           value={isAdmin}
           onChange={(e) => setIsAdmin(e.target.value)}
         >
-          <option value="false">Is Admin?</option>
+          <option selected>Is Admin?</option>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
@@ -97,7 +97,7 @@ const AddUserPage = () => {
           value={isActive}
           onChange={(e) => setIsActive(e.target.value)}
         >
-          <option value="false">Is Active?</option>
+          <option selected>Is Active?</option>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
